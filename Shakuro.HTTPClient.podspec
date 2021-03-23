@@ -12,9 +12,8 @@ Pod::Spec.new do |s|
     s.version          = '0.01'
     s.summary          = 'HTTP client for iOS'
     s.homepage         = 'https://github.com/shakurocom/HTTPClient'
-    s.license          = { :type => 'MIT', :file => 'LICENSE' }
-    s.authors          = {'apopov1988' => 'apopov@shakuro.com',
-                            'wwwpix' => 'spopov@shakuro.com'}
+    s.license          = 'MIT'
+    s.authors          = {'apopov1988' => 'apopov@shakuro.com', 'wwwpix' => 'spopov@shakuro.com'}
     s.source           = { :git => 'https://github.com/shakurocom/HTTPClient.git', :tag => s.version }
     s.ios.deployment_target = '13.0'
     s.dependency "Alamofire", "~> 4.5"
