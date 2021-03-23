@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
     s.license          = { :type => "MIT", :file => "LICENSE.md" }
     s.authors          = {'apopov1988' => 'apopov@shakuro.com', 'wwwpix' => 'spopov@shakuro.com'}
     s.source           = { :git => 'https://github.com/shakurocom/HTTPClient.git', :tag => s.version }
-    s.dependency       "Alamofire", "~> 4.5"
+    s.dependency       "Alamofire", "5.1.0"
     s.framework        = "Foundation"
     s.swift_versions   = ['5.1', '5.2', '5.3']
     s.source_files     = 'Source/*'
