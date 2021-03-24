@@ -15,7 +15,6 @@ public protocol ErrorInterpreterProtocol {
     static func isRequestTimedOutError(_ error: GenericErrorProtocol) -> Bool
     static func isConnectionError(_ error: GenericErrorProtocol) -> Bool
     static func isInternalServerError(_ error: GenericErrorProtocol) -> Bool
-
 }
 
 open class ErrorInterpreter: ErrorInterpreterProtocol {
@@ -81,5 +80,4 @@ open class ErrorInterpreter: ErrorInterpreterProtocol {
     }
 
     private init() {}
-
 }

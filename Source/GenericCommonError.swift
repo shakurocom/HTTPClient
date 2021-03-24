@@ -6,7 +6,6 @@
 import Foundation
 
 public enum GenericCommonError: Int, PresentableError {
-
     case notAuthorized = 101
     case unknown = 102
 
@@ -20,5 +19,4 @@ public enum GenericCommonError: Int, PresentableError {
         }
         return dsc
     }
-
 }
