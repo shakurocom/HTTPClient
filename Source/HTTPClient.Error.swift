@@ -1,14 +1,15 @@
 //
-// Copyright (c) 2018-2019 Shakuro (https://shakuro.com/)
+// Copyright (c) 2018-2020 Shakuro (https://shakuro.com/)
 // Sergey Laschuk
 //
 
-import Foundation
 import Alamofire
+import Foundation
 
 extension AFError: NetworkErrorConvertible {
+
     public func networkError() -> NetworkError {
-        if let invalidCode = responseCode {
+        if isResponseValidationError, let invalidCode = responseCode {
             return NetworkError(value: .invalidHTTPStatusCode(invalidCode), requestURL: url)
         }
         if let underlyingError: NSError = underlyingError as NSError? {
@@ -16,9 +17,14 @@ extension AFError: NetworkErrorConvertible {
         }
         return NetworkError(value: .generalError(errorDescription: errorDescription ?? ""), requestURL: url)
     }
+
 }
 
-public enum HTTPClientError: Swift.Error {
-    case cantSerializeResponseData
-    case cantParseSerializedResponse
+extension HTTPClient {
+
+    public enum Error: Swift.Error {
+        case cantSerializeResponseData(underlyingError: Swift.Error?)
+        case cantParseSerializedResponse(underlyingError: Swift.Error?)
+    }
+
 }

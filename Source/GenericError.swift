@@ -8,7 +8,7 @@ import Foundation
 // MARK: - PresentableError
 
 public protocol PresentableError: Error {
-    var errorDescription: String {get}
+    var errorDescription: String { get }
 }
 
 // MARK: - GenericError
@@ -16,10 +16,12 @@ public protocol PresentableError: Error {
 public typealias DefaultGenericError = GenericError<ErrorInterpreter>
 
 public protocol GenericErrorProtocol: PresentableError {
-    var value: Error {get}
-    var errorDescription: String {get}
+
+    var value: Error { get }
+    var errorDescription: String { get }
 
     func getValue<T>() -> T?
+
 }
 
 public struct GenericError<Interpreter: ErrorInterpreterProtocol>: GenericErrorProtocol {
@@ -61,4 +63,5 @@ public struct GenericError<Interpreter: ErrorInterpreterProtocol>: GenericErrorP
     public func isInternalServerError() -> Bool {
         return Interpreter.isInternalServerError(self)
     }
+
 }
