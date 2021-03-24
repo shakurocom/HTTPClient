@@ -4,7 +4,7 @@
 //
 
 import Alamofire
-import Shakuro.CommonTypes
+import Shakuro_CommonTypes
 import Foundation
 
 open class HTTPClient {
