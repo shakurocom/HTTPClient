@@ -4,6 +4,7 @@
 //
 
 import Alamofire
+import Shakuro_CommonTypes
 import Foundation
 
 extension AFError: NetworkErrorConvertible {

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name             = 'Shakuro.HTTPClient'
-    s.version          = '0.0.10'
+    s.version          = '0.0.11'
     s.summary          = 'HTTP client for iOS'
     s.homepage         = 'https://github.com/shakurocom/HTTPClient'
     s.license          = { :type => "MIT", :file => "LICENSE.md" }
