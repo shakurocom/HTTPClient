@@ -30,10 +30,16 @@ extension HTTPClient {
         case imagePNG = "image/png"
         case imageJPEG = "image/jpeg"
         case imageGIF = "image/gif"
+        case imageAny = "image/*"
         case applicationVNDAPIJSON = "application/vnd.api+json"
+        case applicationOctetStream = "application/octet-stream"
 
         public func acceptHeader() -> Alamofire.HTTPHeader {
             return Alamofire.HTTPHeader.accept(self.rawValue)
+        }
+
+        public func contentHeader() -> Alamofire.HTTPHeader {
+            return Alamofire.HTTPHeader.contentType(self.rawValue)
         }
 
         public static func acceptHeader(_ contentTypes: [ContentType]) -> Alamofire.HTTPHeader {
