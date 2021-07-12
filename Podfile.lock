@@ -1,0 +1,24 @@
+PODS:
+  - Alamofire (5.1.0)
+  - Shakuro.CommonTypes (1.1.0)
+  - SwiftLint (0.43.1)
+
+DEPENDENCIES:
+  - Alamofire (= 5.1.0)
+  - Shakuro.CommonTypes (= 1.1.0)
+  - SwiftLint (= 0.43.1)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - Shakuro.CommonTypes
+    - SwiftLint
+
+SPEC CHECKSUMS:
+  Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
+  Shakuro.CommonTypes: ce6dc9fe3a068a5e663a554d433703e6f4ea6a9f
+  SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
+
+PODFILE CHECKSUM: d4c469c677227da24283e26f397c2706f1346bac
+
+COCOAPODS: 1.10.1
