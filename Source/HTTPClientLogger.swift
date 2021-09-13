@@ -158,20 +158,22 @@ extension HTTPClientLoggerFull: HTTPClientLogger {
         requestDescription.append("\n\(tab)timeoutInterval: \(requestOptions.timeoutInterval)")
         requestDescription.append("\n\(tab)method: \(requestOptions.method)")
         requestDescription.append("\n\(tab)allHTTPHeaderFields: \(resolvedHeaders)")
-        if var realParameters = requestOptions.parameters {
-            switch realParameters {
+        if let urlQueryParameters = requestOptions.urlQueryParameters {
+            let brakets = requestOptions.urlQueryParametersAddArrayBrackets
+            requestDescription.append("\n\(tab)queyParameters (array brakets: \(brakets)): \(censorParameters(urlQueryParameters))")
+        }
+        if var bodyParameters = requestOptions.bodyParameters {
+            switch bodyParameters {
             case .httpBody(let arrayBrakets, let parameters):
-                realParameters = .httpBody(arrayBrakets: arrayBrakets, parameters: censorParameters(parameters))
-            case .urlQuery(let arrayBrakets, let parameters):
-                realParameters = .urlQuery(arrayBrakets: arrayBrakets, parameters: censorParameters(parameters))
+                bodyParameters = .httpBody(arrayBrakets: arrayBrakets, parameters: censorParameters(parameters))
             case .json(let parameters):
                 if let typedParameters = parameters as? [String: Any] {
-                    realParameters = .json(parameters: censorParameters(typedParameters))
+                    bodyParameters = .json(parameters: censorParameters(typedParameters))
                 } else {
-                    realParameters = .json(parameters: parameters)
+                    bodyParameters = .json(parameters: parameters)
                 }
             }
-            requestDescription.append("\n\(tab)parameters: \(realParameters)")
+            requestDescription.append("\n\(tab)parameters: \(bodyParameters)")
         }
         if let authCredentialActual = requestOptions.authCredential {
             let credentialForLog = URLCredential(user: censoredValue,

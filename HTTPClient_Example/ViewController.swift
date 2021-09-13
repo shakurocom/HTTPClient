@@ -3,15 +3,28 @@
 // Sergey Laschuk
 //
 
-import UIKit
+import Alamofire
 import HTTPClient_Framework
+import UIKit
 
 class ViewController: UIViewController {
 
+    private var request: Request?
+    private let client: HTTPClient = HTTPClient(name: "test", logger: HTTPClientLoggerFull())
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        let client = HTTPClient(name: "test") // TODO: make something useful
+
+        let requestOptions = HTTPClient.RequestOptions(
+            endpoint: ExampleEndPoint.artworks,
+            method: .get,
+            parser: ExampleParser(),
+            urlQueryParameters: ["page": 2,
+                                 "limit": 10],
+            bodyParameters: nil)
+        request = client.sendRequest(options: requestOptions, completion: { result in
+            print(result)
+        })
         print(client.commonHeaders().debugDescription)
     }
 

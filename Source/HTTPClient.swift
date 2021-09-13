@@ -101,13 +101,21 @@ private extension HTTPClient {
         internal let method: Alamofire.HTTPMethod
         internal let headers: Alamofire.HTTPHeaders
         internal let timeoutInterval: TimeInterval
-        internal let parameters: HTTPClient.Parameters?
+        internal let urlQueryParameters: [String: Any]?
+        internal let urlQueryParametersAddArrayBrackets: Bool
+        internal let bodyParameters: BodyParameters?
 
         internal func asURLRequest() throws -> URLRequest {
             var request = try URLRequest(url: urlString, method: method, headers: headers)
             request.timeoutInterval = timeoutInterval
-            if let realParameters = parameters {
-                request = try realParameters.encode(intoRequest: request)
+            if let queryParameters = urlQueryParameters {
+                let encoding = URLEncoding(destination: .queryString,
+                                           arrayEncoding: urlQueryParametersAddArrayBrackets ? .brackets : .noBrackets,
+                                           boolEncoding: .numeric) // default value
+                request = try encoding.encode(request, with: queryParameters)
+            }
+            if let realBodyParameters = bodyParameters {
+                request = try realBodyParameters.encode(intoRequest: request)
             }
             return request
         }
@@ -129,7 +137,9 @@ private extension HTTPClient {
                            method: options.method,
                            headers: resolvedHeaders,
                            timeoutInterval: options.timeoutInterval,
-                           parameters: options.parameters)
+                           urlQueryParameters: options.urlQueryParameters,
+                           urlQueryParametersAddArrayBrackets: options.urlQueryParametersAddArrayBrackets,
+                           bodyParameters: options.bodyParameters)
     }
 
     private func finalizeRequest<ParserType: HTTPClientParser>(

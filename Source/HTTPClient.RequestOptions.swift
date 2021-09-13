@@ -15,7 +15,9 @@ extension HTTPClient {
         public let endpoint: HTTPClientAPIEndPoint
         public let method: Alamofire.HTTPMethod
         public let parser: ParserType
-        public let parameters: Parameters?
+        public let urlQueryParameters: [String: Any]?
+        public let urlQueryParametersAddArrayBrackets: Bool
+        public let bodyParameters: BodyParameters?
         /// Headers will be applied in this order (overriding previous ones if key is the same):
         ///     default for http method -> HTTPClient.commonHeaders() -> RequestOptions.headers
         ///
@@ -30,7 +32,9 @@ extension HTTPClient {
         public init(endpoint: HTTPClientAPIEndPoint,
                     method: Alamofire.HTTPMethod,
                     parser: ParserType,
-                    parameters: Parameters? = nil,
+                    urlQueryParameters: [String: Any]? = nil,
+                    urlQueryParametersAddArrayBrackets: Bool = false,
+                    bodyParameters: BodyParameters? = nil,
                     headers: [Alamofire.HTTPHeader] = [ContentType.applicationJSON.acceptHeader()],
                     authCredential: URLCredential? = nil,
                     timeoutInterval: TimeInterval = defaultTimeoutInterval,
@@ -38,7 +42,9 @@ extension HTTPClient {
             self.endpoint = endpoint
             self.method = method
             self.parser = parser
-            self.parameters = parameters
+            self.urlQueryParameters = urlQueryParameters
+            self.urlQueryParametersAddArrayBrackets = urlQueryParametersAddArrayBrackets
+            self.bodyParameters = bodyParameters
             self.headers = headers
             self.authCredential = authCredential
             self.timeoutInterval = timeoutInterval

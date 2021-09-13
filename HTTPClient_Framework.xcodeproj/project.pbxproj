@@ -14,7 +14,7 @@
 		F0EBCB2E26989A33006A2695 /* HTTPClient_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = F0EBCB2026989A32006A2695 /* HTTPClient_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F0EBCB5926989AB3006A2695 /* HTTPClient.ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBCB5126989AB3006A2695 /* HTTPClient.ContentType.swift */; };
 		F0EBCB5A26989AB3006A2695 /* HTTPClient.Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBCB5226989AB3006A2695 /* HTTPClient.Error.swift */; };
-		F0EBCB5B26989AB3006A2695 /* HTTPClient.Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBCB5326989AB3006A2695 /* HTTPClient.Parameters.swift */; };
+		F0EBCB5B26989AB3006A2695 /* HTTPClient.BodyParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBCB5326989AB3006A2695 /* HTTPClient.BodyParameters.swift */; };
 		F0EBCB5C26989AB3006A2695 /* HTTPClient.RequestOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBCB5426989AB3006A2695 /* HTTPClient.RequestOptions.swift */; };
 		F0EBCB5D26989AB3006A2695 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBCB5526989AB3006A2695 /* HTTPClient.swift */; };
 		F0EBCB5E26989AB3006A2695 /* HTTPClientAPIEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBCB5626989AB3006A2695 /* HTTPClientAPIEndPoint.swift */; };
@@ -34,7 +34,7 @@
 		F0EBCB2126989A32006A2695 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0EBCB5126989AB3006A2695 /* HTTPClient.ContentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.ContentType.swift; sourceTree = "<group>"; };
 		F0EBCB5226989AB3006A2695 /* HTTPClient.Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.Error.swift; sourceTree = "<group>"; };
-		F0EBCB5326989AB3006A2695 /* HTTPClient.Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.Parameters.swift; sourceTree = "<group>"; };
+		F0EBCB5326989AB3006A2695 /* HTTPClient.BodyParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.BodyParameters.swift; sourceTree = "<group>"; };
 		F0EBCB5426989AB3006A2695 /* HTTPClient.RequestOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.RequestOptions.swift; sourceTree = "<group>"; };
 		F0EBCB5526989AB3006A2695 /* HTTPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		F0EBCB5626989AB3006A2695 /* HTTPClientAPIEndPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClientAPIEndPoint.swift; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 			children = (
 				F0EBCB5126989AB3006A2695 /* HTTPClient.ContentType.swift */,
 				F0EBCB5226989AB3006A2695 /* HTTPClient.Error.swift */,
-				F0EBCB5326989AB3006A2695 /* HTTPClient.Parameters.swift */,
+				F0EBCB5326989AB3006A2695 /* HTTPClient.BodyParameters.swift */,
 				F0EBCB5426989AB3006A2695 /* HTTPClient.RequestOptions.swift */,
 				F0EBCB5526989AB3006A2695 /* HTTPClient.swift */,
 				F0EBCB5626989AB3006A2695 /* HTTPClientAPIEndPoint.swift */,
@@ -228,7 +228,7 @@
 				F0EBCB5C26989AB3006A2695 /* HTTPClient.RequestOptions.swift in Sources */,
 				F0EBCB5D26989AB3006A2695 /* HTTPClient.swift in Sources */,
 				F0EBCB5E26989AB3006A2695 /* HTTPClientAPIEndPoint.swift in Sources */,
-				F0EBCB5B26989AB3006A2695 /* HTTPClient.Parameters.swift in Sources */,
+				F0EBCB5B26989AB3006A2695 /* HTTPClient.BodyParameters.swift in Sources */,
 				F0EBCB5F26989AB3006A2695 /* HTTPClientLogger.swift in Sources */,
 				F0EBCB6026989AB3006A2695 /* HTTPClientParser.swift in Sources */,
 				F0EBCB5A26989AB3006A2695 /* HTTPClient.Error.swift in Sources */,
