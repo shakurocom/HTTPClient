@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     private var request: Request?
-    private let client: HTTPClient = HTTPClient(name: "test", logger: HTTPClientLoggerFull())
+    private let client: HTTPClient = HTTPClient(name: "test", logger: ExampleHTTPLogger())
 
     override func viewDidLoad() {
         super.viewDidLoad()
