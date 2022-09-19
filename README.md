@@ -1,4 +1,4 @@
-![Shakuro HTTPClient](title_image.png)
+![Shakuro HTTPClient](Resources/title_image.png)
 <br><br>
 # HTTPClient
 ![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
@@ -12,7 +12,7 @@
 
 HTTPClient is a Swift library designed to abstract away access to Alamofire. The main purpose of the HTTPClient component is to encapsulate endpoints description inside some network abstraction layer to avoid calling Alamofire directly. Enums are used to define enpoints. This allows to make compile-time checks for correct API endpoint accesses.
 
-![](HTTPClient.png)
+![](Resources/HTTPClient.png)
 
 ## Requirements
 

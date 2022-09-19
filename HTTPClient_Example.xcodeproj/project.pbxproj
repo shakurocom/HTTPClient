@@ -10,7 +10,6 @@
 		A5716D99271E7E6400844212 /* ExampleHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5716D98271E7E6400844212 /* ExampleHTTPClient.swift */; };
 		A5716D9C271E850A00844212 /* ExampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5716D9B271E850A00844212 /* ExampleCell.swift */; };
 		A5B34F5C27019163005F23C5 /* ExampleHTTPLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B34F5B27019163005F23C5 /* ExampleHTTPLogger.swift */; };
-		AFE40C3D09FFC84DA5FD31D2 /* Pods_HTTPClient_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B893BE5336439D1CFAEFD4 /* Pods_HTTPClient_Example.framework */; };
 		F006A29726989C1D00F0A062 /* HTTPClient_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F006A29626989C1D00F0A062 /* HTTPClient_Framework.framework */; };
 		F006A29826989C1D00F0A062 /* HTTPClient_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F006A29626989C1D00F0A062 /* HTTPClient_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F0B2E9D626EA39D600CCA6B9 /* ExampleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B2E9D526EA39D600CCA6B9 /* ExampleParser.swift */; };
@@ -37,8 +36,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		35C3CD71D73147C28C308BFD /* Pods-HTTPClient_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPClient_Example.debug.xcconfig"; path = "Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		45B893BE5336439D1CFAEFD4 /* Pods_HTTPClient_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTTPClient_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5716D98271E7E6400844212 /* ExampleHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleHTTPClient.swift; sourceTree = "<group>"; };
 		A5716D9B271E850A00844212 /* ExampleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleCell.swift; sourceTree = "<group>"; };
 		A5B34F5B27019163005F23C5 /* ExampleHTTPLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleHTTPLogger.swift; sourceTree = "<group>"; };
@@ -52,7 +49,6 @@
 		F0EBCB4726989A7E006A2695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F0EBCB4826989A7E006A2695 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0EBCB4926989A7E006A2695 /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
-		FFA085719F56BC5D19ED1B65 /* Pods-HTTPClient_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPClient_Example.release.xcconfig"; path = "Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +57,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F006A29726989C1D00F0A062 /* HTTPClient_Framework.framework in Frameworks */,
-				AFE40C3D09FFC84DA5FD31D2 /* Pods_HTTPClient_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,7 +67,6 @@
 			isa = PBXGroup;
 			children = (
 				F006A29626989C1D00F0A062 /* HTTPClient_Framework.framework */,
-				45B893BE5336439D1CFAEFD4 /* Pods_HTTPClient_Example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -80,10 +74,36 @@
 		3A3D05B6BB358E302163418A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				35C3CD71D73147C28C308BFD /* Pods-HTTPClient_Example.debug.xcconfig */,
-				FFA085719F56BC5D19ED1B65 /* Pods-HTTPClient_Example.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		6B65ED1A28D873480073F353 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F0EBCB4826989A7E006A2695 /* Info.plist */,
+				F0EBCB4326989A7E006A2695 /* Assets.xcassets */,
+				6B65ED1C28D8735E0073F353 /* UI */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6B65ED1B28D873550073F353 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				F0EBCB4926989A7E006A2695 /* ExampleViewController.swift */,
+				A5716D9B271E850A00844212 /* ExampleCell.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		6B65ED1C28D8735E0073F353 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				F0EBCB4426989A7E006A2695 /* LaunchScreen.storyboard */,
+				F0EBCB4626989A7E006A2695 /* Main.storyboard */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		A5716D9A271E7F1A00844212 /* HTTPClient */ = {
@@ -119,13 +139,9 @@
 			isa = PBXGroup;
 			children = (
 				F0EBCB4226989A7E006A2695 /* AppDelegate.swift */,
-				F0EBCB4926989A7E006A2695 /* ExampleViewController.swift */,
-				A5716D9B271E850A00844212 /* ExampleCell.swift */,
 				A5716D9A271E7F1A00844212 /* HTTPClient */,
-				F0EBCB4326989A7E006A2695 /* Assets.xcassets */,
-				F0EBCB4826989A7E006A2695 /* Info.plist */,
-				F0EBCB4426989A7E006A2695 /* LaunchScreen.storyboard */,
-				F0EBCB4626989A7E006A2695 /* Main.storyboard */,
+				6B65ED1A28D873480073F353 /* Resources */,
+				6B65ED1B28D873550073F353 /* UI */,
 			);
 			path = HTTPClient_Example;
 			sourceTree = "<group>";
@@ -137,13 +153,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F0EBCAFF26989948006A2695 /* Build configuration list for PBXNativeTarget "HTTPClient_Example" */;
 			buildPhases = (
-				21A52690D23205F453D54F86 /* [CP] Check Pods Manifest.lock */,
 				F0EBCB6126989B84006A2695 /* Swiftlint script */,
 				F0EBCAE726989948006A2695 /* Sources */,
 				F0EBCAE826989948006A2695 /* Frameworks */,
 				F0EBCAE926989948006A2695 /* Resources */,
 				F006A29926989C1D00F0A062 /* Embed Frameworks */,
-				E5A27A8EF911DEA69E0B7E30 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -200,45 +214,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		21A52690D23205F453D54F86 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HTTPClient_Example-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E5A27A8EF911DEA69E0B7E30 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		F0EBCB6126989B84006A2695 /* Swiftlint script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,13 +389,12 @@
 		};
 		F0EBCB0026989948006A2695 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35C3CD71D73147C28C308BFD /* Pods-HTTPClient_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MW2UF479VW;
-				INFOPLIST_FILE = "$(SRCROOT)/HTTPClient_Example/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/HTTPClient_Example/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -434,13 +408,12 @@
 		};
 		F0EBCB0126989948006A2695 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FFA085719F56BC5D19ED1B65 /* Pods-HTTPClient_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MW2UF479VW;
-				INFOPLIST_FILE = "$(SRCROOT)/HTTPClient_Example/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/HTTPClient_Example/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
