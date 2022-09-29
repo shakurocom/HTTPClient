@@ -44,10 +44,10 @@ If you prefer not to use CocoaPods, you can integrate Shakuro.HTTPClient simply 
 
 1. Create a couple of endpoints by adopting `HTTPClientAPIEndPoint` protocol.
 2. Create responses parsers by adopting `HTTPClientParser` protocol.
-3. Create new instanse of `HTTPClient` class.
+3. Create new instance of `HTTPClient` class.
 4. Start your HTTP request by calling `.sendRequest`. You should use completions to handle parsed results.
 
-Have a look at the [HTTPClient_Example](https://github.com/shakurocom/HTTPClient/tree/master/HTTPClient_Example)
+Take a look at the [HTTPClient_Example](https://github.com/shakurocom/HTTPClient/tree/master/HTTPClient_Example) for more info.
 
 ## License
 
@@ -55,6 +55,5 @@ Shakuro.HTTPClient is released under the MIT license. [See LICENSE](https://gith
 
 ## Give it a try and reach us
 
-Star this tool if you like it, it will help us grow and add new useful things. 
-Feel free to reach out and hire our team to develop a mobile or web project for you.
+Star this tool if you like it. This will help us grow and add new useful things. Feel free to reach out and hire our team to develop a mobile or web project for you.
 
