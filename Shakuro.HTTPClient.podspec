@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
 
     s.framework        = "Foundation"
     s.dependency       "Alamofire", "5.1.0"
-    s.dependency       "Shakuro.CommonTypes", "1.1.2"
+    s.dependency       "Shakuro.CommonTypes", "1.1.4"
   
 end
