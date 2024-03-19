@@ -16,5 +16,5 @@ target 'HTTPClient_Example' do
     project 'HTTPClient_Example.xcodeproj'
     pod 'SwiftLint', '0.43.1'
     pod 'Shakuro.CommonTypes', '1.1.4'
-    pod 'Alamofire', '5.1.0'
+    pod 'Alamofire', '5.9.0'
 end
