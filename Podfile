@@ -9,7 +9,7 @@ workspace 'HTTPClient'
 target 'HTTPClient_Framework' do
     project 'HTTPClient_Framework.xcodeproj'
     pod 'Shakuro.CommonTypes', '1.1.4'
-    pod 'Alamofire', '5.1.0'
+    pod 'Alamofire', '5.9.0'
 end
 
 target 'HTTPClient_Example' do
