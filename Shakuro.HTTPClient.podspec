@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = '13.0'
 
     s.framework        = "Foundation"
-    s.dependency       "Alamofire", "~> 5.9.0"
+    s.dependency       "Alamofire", "~> 5.9.1"
     s.dependency       "Shakuro.CommonTypes", "~> 1.1"
   
 end
