@@ -78,21 +78,20 @@ private extension ExampleViewController {
             parser: ExampleParser(),
             urlQueryParameters: nil,
             bodyParameters: nil)
-        Task { [weak self] in
-            guard let strongSelf = self else { return }
-            let result = await strongSelf.client.sendRequest(options: requestOptions)
-            Task { @MainActor [weak self] in
-                guard let strongSelf = self else { return }
-                strongSelf.activityIndicator.stopAnimating()
-                switch result {
-                case .success(let contributors):
-                    strongSelf.contributors = contributors
-                    strongSelf.tableView.reloadData()
-                case .cancelled:
-                    break
-                case .failure(let error):
-                    print(error)
-                }
+        Task { @MainActor [weak self] in
+            let result = await self?.client.sendRequest(options: requestOptions)
+            guard let strongResult = result, let strongSelf = self else {
+                return
+            }
+            strongSelf.activityIndicator.stopAnimating()
+            switch strongResult {
+            case .success(let contributors):
+                strongSelf.contributors = contributors
+                strongSelf.tableView.reloadData()
+            case .cancelled:
+                break
+            case .failure(let error):
+                print(error)
             }
         }
     }
