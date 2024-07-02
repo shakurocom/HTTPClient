@@ -92,7 +92,6 @@ open class HTTPClient {
 
 // MARK: - Async support
 
-@available(iOS 13.0.0, *)
 public extension HTTPClient {
 
     func sendRequest<ParserType: HTTPClientParser>(options: RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
@@ -184,7 +183,6 @@ private extension HTTPClient {
                            bodyParameters: options.bodyParameters)
     }
 
-    @available(iOS 13.0.0, *)
     private func finalizeRequest<ParserType: HTTPClientParser>(
         _ aRequest: Alamofire.DataRequest,
         options: RequestOptions<ParserType>,

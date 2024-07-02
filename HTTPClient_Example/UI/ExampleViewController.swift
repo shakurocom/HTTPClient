@@ -19,11 +19,7 @@ class ExampleViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
-            loadContributorsAsync()
-        } else {
-            loadContributors()
-        }
+        loadContributorsAsync()
     }
 
 }
@@ -73,7 +69,6 @@ private extension ExampleViewController {
         })
     }
 
-    @available(iOS 13.0, *)
     @MainActor
     private func loadContributorsAsync() {
         activityIndicator.startAnimating()
