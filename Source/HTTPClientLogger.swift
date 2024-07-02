@@ -151,8 +151,8 @@ open class HTTPClientLoggerFull {
 
 extension HTTPClientLoggerFull: HTTPClientLogger {
 
-    open func clientDidCreateRequest<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                   resolvedHeaders: HTTPHeaders) {
+    public func clientDidCreateRequest<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
+                                                                     resolvedHeaders: HTTPHeaders) {
         var requestDescription = "Request: "
         requestDescription.append("\n\(tab)url: \(requestOptions.endpoint.urlString())")
         requestDescription.append("\n\(tab)timeoutInterval: \(requestOptions.timeoutInterval)")
@@ -185,11 +185,11 @@ extension HTTPClientLoggerFull: HTTPClientLogger {
         log(requestDescription)
     }
 
-    open func clientDidReceiveResponse<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                     request: URLRequest?,
-                                                                     response: HTTPURLResponse?,
-                                                                     responseData: Data?,
-                                                                     responseError: Error?) {
+    public func clientDidReceiveResponse<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
+                                                                       request: URLRequest?,
+                                                                       response: HTTPURLResponse?,
+                                                                       responseData: Data?,
+                                                                       responseError: Error?) {
         let codeString: String
         if let statusCode = response?.statusCode {
             codeString = "\(statusCode)"
@@ -199,7 +199,7 @@ extension HTTPClientLoggerFull: HTTPClientLogger {
         let responseHeaderDescription = response?.allHeaderFields.description ?? "No Response Header"
         let responseDataDescription: String
         if let responseRawData = responseData, !responseRawData.isEmpty,
-            let responseDataDescriptionActual = generateResponseDataDebugDescription(responseRawData) {
+           let responseDataDescriptionActual = generateResponseDataDebugDescription(responseRawData) {
             responseDataDescription = responseDataDescriptionActual
         } else {
             responseDataDescription = "No Response Data"
@@ -221,42 +221,42 @@ extension HTTPClientLoggerFull: HTTPClientLogger {
         log(responseDescription)
     }
 
-    open func requestWasCancelled<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                request: URLRequest?,
-                                                                response: HTTPURLResponse?,
-                                                                responseData: Data?) {
+    public func requestWasCancelled<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
+                                                                  request: URLRequest?,
+                                                                  response: HTTPURLResponse?,
+                                                                  responseData: Data?) {
         // handled by more generic clientDidReceiveResponse()
     }
 
-    open func parserDidFindError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                               request: URLRequest?,
-                                                               response: HTTPURLResponse?,
-                                                               responseData: Data?,
-                                                               parsedError: Error) {
+    public func parserDidFindError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
+                                                                 request: URLRequest?,
+                                                                 response: HTTPURLResponse?,
+                                                                 responseData: Data?,
+                                                                 parsedError: Error) {
         // handled by more generic clientDidReceiveResponse()
     }
 
-    open func clientDidEncounterNetworkError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                           request: URLRequest?,
-                                                                           response: HTTPURLResponse?,
-                                                                           responseData: Data?,
-                                                                           networkError: Error) {
+    public func clientDidEncounterNetworkError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
+                                                                             request: URLRequest?,
+                                                                             response: HTTPURLResponse?,
+                                                                             responseData: Data?,
+                                                                             networkError: Error) {
         // handled by more generic clientDidReceiveResponse()
     }
 
-    open func clientDidEncounterSerializationError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                                 request: URLRequest?,
-                                                                                 response: HTTPURLResponse?,
-                                                                                 responseData: Data?,
-                                                                                 serializationError: Error) {
+    public func clientDidEncounterSerializationError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
+                                                                                   request: URLRequest?,
+                                                                                   response: HTTPURLResponse?,
+                                                                                   responseData: Data?,
+                                                                                   serializationError: Error) {
         // usually handled by parser itself
     }
 
-    open func clientDidEncounterParseError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                         request: URLRequest?,
-                                                                         response: HTTPURLResponse?,
-                                                                         responseData: Data?,
-                                                                         parseError: Error) {
+    public func clientDidEncounterParseError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
+                                                                           request: URLRequest?,
+                                                                           response: HTTPURLResponse?,
+                                                                           responseData: Data?,
+                                                                           parseError: Error) {
         // usually handled by parser itself
     }
 

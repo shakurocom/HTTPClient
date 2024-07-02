@@ -46,30 +46,30 @@ open class HTTPClient {
     public func sendRequest<ParserType: HTTPClientParser>(
         options: RequestOptions<ParserType>,
         completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
-        -> Alamofire.Request {
-            let requestPrefab = formRequest(options: options)
-            let request = session.request(requestPrefab)
-            let finalizedRequest = finalizeRequest(request,
-                                                   options: options,
-                                                   resolvedHeaders: requestPrefab.headers,
-                                                   acceptableContentTypes: requestPrefab.acceptableContentTypes(),
-                                                   completion: completion)
-            return finalizedRequest
+    -> Alamofire.Request {
+        let requestPrefab = formRequest(options: options)
+        let request = session.request(requestPrefab)
+        let finalizedRequest = finalizeRequest(request,
+                                               options: options,
+                                               resolvedHeaders: requestPrefab.headers,
+                                               acceptableContentTypes: requestPrefab.acceptableContentTypes(),
+                                               completion: completion)
+        return finalizedRequest
     }
 
     public func upload<ParserType: HTTPClientParser>(
         data: Data,
         options: RequestOptions<ParserType>,
         completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
-        -> Alamofire.Request {
-            let requestPrefab = formRequest(options: options)
-            let request = session.upload(data, with: requestPrefab)
-            let finalizedRequest = finalizeRequest(request,
-                                                   options: options,
-                                                   resolvedHeaders: requestPrefab.headers,
-                                                   acceptableContentTypes: requestPrefab.acceptableContentTypes(),
-                                                   completion: completion)
-            return finalizedRequest
+    -> Alamofire.Request {
+        let requestPrefab = formRequest(options: options)
+        let request = session.upload(data, with: requestPrefab)
+        let finalizedRequest = finalizeRequest(request,
+                                               options: options,
+                                               resolvedHeaders: requestPrefab.headers,
+                                               acceptableContentTypes: requestPrefab.acceptableContentTypes(),
+                                               completion: completion)
+        return finalizedRequest
     }
 
     /// Uploads multi-part form data.
@@ -77,16 +77,57 @@ open class HTTPClient {
         multipartFormData: Alamofire.MultipartFormData,
         options: RequestOptions<ParserType>,
         completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
-        -> Alamofire.Request {
+    -> Alamofire.Request {
+        let requestPrefab = formRequest(options: options)
+        let request = session.upload(multipartFormData: multipartFormData, with: requestPrefab)
+        let finalizedRequest = finalizeRequest(request,
+                                               options: options,
+                                               resolvedHeaders: requestPrefab.headers,
+                                               acceptableContentTypes: requestPrefab.acceptableContentTypes(),
+                                               completion: completion)
+        return finalizedRequest
+    }
+
+}
+
+// MARK: - Async support
+
+public extension HTTPClient {
+
+    func sendRequest<ParserType: HTTPClientParser>(options: RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+        let requestPrefab = formRequest(options: options)
+        let request = session.request(requestPrefab)
+        let result = await finalizeRequest(request,
+                                           options: options,
+                                           resolvedHeaders: requestPrefab.headers,
+                                           acceptableContentTypes: requestPrefab.acceptableContentTypes())
+        return result
+    }
+
+    func upload<ParserType: HTTPClientParser>(
+        data: Data,
+        options: RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+            let requestPrefab = formRequest(options: options)
+            let request = session.upload(data, with: requestPrefab)
+            let result = await finalizeRequest(request,
+                                               options: options,
+                                               resolvedHeaders: requestPrefab.headers,
+                                               acceptableContentTypes: requestPrefab.acceptableContentTypes())
+            return result
+        }
+
+    /// Uploads multi-part form data.
+    func upload<ParserType: HTTPClientParser>(
+        multipartFormData: Alamofire.MultipartFormData,
+        options: RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
             let requestPrefab = formRequest(options: options)
             let request = session.upload(multipartFormData: multipartFormData, with: requestPrefab)
-            let finalizedRequest = finalizeRequest(request,
-                                                   options: options,
-                                                   resolvedHeaders: requestPrefab.headers,
-                                                   acceptableContentTypes: requestPrefab.acceptableContentTypes(),
-                                                   completion: completion)
-            return finalizedRequest
-    }
+            let result = await finalizeRequest(request,
+                                               options: options,
+                                               resolvedHeaders: requestPrefab.headers,
+                                               acceptableContentTypes: requestPrefab.acceptableContentTypes())
+            return result
+        }
 
 }
 
@@ -146,92 +187,120 @@ private extension HTTPClient {
         _ aRequest: Alamofire.DataRequest,
         options: RequestOptions<ParserType>,
         resolvedHeaders: Alamofire.HTTPHeaders,
-        acceptableContentTypes: [String],
-        completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
-        -> Alamofire.Request {
-            var request = aRequest
+        acceptableContentTypes: [String]) async -> CancellableAsyncResult<ParserType.ResultType> {
+            let request: Alamofire.DataRequest
             if let credential = options.authCredential {
-                request = request.authenticate(with: credential)
+                request = aRequest.authenticate(with: credential)
+            } else {
+                request = aRequest
             }
-            let currentLogger = logger
-            currentLogger.clientDidCreateRequest(requestOptions: options, resolvedHeaders: resolvedHeaders)
-            request = request
+            logger.clientDidCreateRequest(requestOptions: options, resolvedHeaders: resolvedHeaders)
+            let response = await request
                 .validate(statusCode: options.acceptableStatusCodes)
                 .validate(contentType: acceptableContentTypes)
-                .response(queue: callbackQueue, completionHandler: { (response: AFDataResponse<Data?>) in
-                    currentLogger.clientDidReceiveResponse(requestOptions: options,
-                                                           request: response.request,
-                                                           response: response.response,
-                                                           responseData: response.data,
-                                                           responseError: response.error)
-                    let parsedResult = HTTPClient.applyParser(response: response,
-                                                              requestOptions: options,
-                                                              logger: currentLogger)
-                    completion(parsedResult)
-                })
-            return request
+                .serializingData(automaticallyCancelling: true)
+                .response
+            logger.clientDidReceiveResponse(requestOptions: options,
+                                            request: response.request,
+                                            response: response.response,
+                                            responseData: response.data,
+                                            responseError: response.error)
+            let parsedResult = HTTPClient.applyParser(response: response,
+                                                      requestOptions: options,
+                                                      logger: logger)
+            return parsedResult
+        }
+
+    private func finalizeRequest<ParserType: HTTPClientParser>(
+        _ aRequest: Alamofire.DataRequest,
+        options: RequestOptions<ParserType>,
+        resolvedHeaders: Alamofire.HTTPHeaders,
+        acceptableContentTypes: [String],
+        completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
+    -> Alamofire.Request {
+        var request = aRequest
+        if let credential = options.authCredential {
+            request = request.authenticate(with: credential)
+        }
+        let currentLogger = logger
+        currentLogger.clientDidCreateRequest(requestOptions: options, resolvedHeaders: resolvedHeaders)
+        request = request
+            .validate(statusCode: options.acceptableStatusCodes)
+            .validate(contentType: acceptableContentTypes)
+            .response(queue: callbackQueue, completionHandler: { (response: AFDataResponse<Data?>) in
+                currentLogger.clientDidReceiveResponse(requestOptions: options,
+                                                       request: response.request,
+                                                       response: response.response,
+                                                       responseData: response.data,
+                                                       responseError: response.error)
+                let parsedResult = HTTPClient.applyParser(response: response,
+                                                          requestOptions: options,
+                                                          logger: currentLogger)
+                completion(parsedResult)
+            })
+        return request
     }
 
-    private static func applyParser<ParserType: HTTPClientParser>(
-        response: AFDataResponse<Data?>,
+    private static func applyParser<ParserType: HTTPClientParser, ResponseValue>(
+        response: AFDataResponse<ResponseValue>,
         requestOptions: HTTPClient.RequestOptions<ParserType>,
         logger: HTTPClientLogger) ->
-        CancellableAsyncResult<ParserType.ResultType> {
-            if let error = response.error, error.isExplicitlyCancelledError {
-                logger.requestWasCancelled(requestOptions: requestOptions,
-                                           request: response.request,
-                                           response: response.response,
-                                           responseData: response.data)
-                return .cancelled
-            }
+    CancellableAsyncResult<ParserType.ResultType> {
+        if let error = response.error, error.isExplicitlyCancelledError {
+            logger.requestWasCancelled(requestOptions: requestOptions,
+                                       request: response.request,
+                                       response: response.response,
+                                       responseData: response.data)
+            return .cancelled
+        }
 
-            // 1) direct parse for error
-            if let error = requestOptions.parser.parseForError(response: response.response, responseData: response.data) {
-                logger.parserDidFindError(requestOptions: requestOptions,
-                                          request: response.request,
-                                          response: response.response,
-                                          responseData: response.data,
-                                          parsedError: error)
-                return .failure(error: error)
-            }
+        // 1) direct parse for error
+        if let error = requestOptions.parser.parseForError(response: response.response, responseData: response.data) {
+            logger.parserDidFindError(requestOptions: requestOptions,
+                                      request: response.request,
+                                      response: response.response,
+                                      responseData: response.data,
+                                      parsedError: error)
+            return .failure(error: error)
+        }
 
-            // 2) network error
-            if let networkError = response.error {
-                logger.clientDidEncounterNetworkError(requestOptions: requestOptions,
-                                                      request: response.request,
-                                                      response: response.response,
-                                                      responseData: response.data,
-                                                      networkError: networkError)
-                return .failure(error: networkError)
-            }
+        // 2) network error
+        if let networkError = response.error {
+            logger.clientDidEncounterNetworkError(requestOptions: requestOptions,
+                                                  request: response.request,
+                                                  response: response.response,
+                                                  responseData: response.data,
+                                                  networkError: networkError)
+            return .failure(error: networkError)
+        }
 
-            // 3) serialization error
-            let serializedResponseValue: ParserType.ResponseValueType
-            do {
-                serializedResponseValue = try requestOptions.parser.serializeResponseData(response.data)
-            } catch let error {
-                logger.clientDidEncounterSerializationError(requestOptions: requestOptions,
-                                                            request: response.request,
-                                                            response: response.response,
-                                                            responseData: response.data,
-                                                            serializationError: error)
-                return .failure(error: HTTPClient.Error.cantSerializeResponseData(underlyingError: error))
-            }
+        // 3) serialization error
+        let serializedResponseValue: ParserType.ResponseValueType
+        do {
+            serializedResponseValue = try requestOptions.parser.serializeResponseData(response.data)
+        } catch let error {
+            logger.clientDidEncounterSerializationError(requestOptions: requestOptions,
+                                                        request: response.request,
+                                                        response: response.response,
+                                                        responseData: response.data,
+                                                        serializationError: error)
+            return .failure(error: HTTPClient.Error.cantSerializeResponseData(underlyingError: error))
+        }
 
-            // 4) parsing error
-            let parsedObject: ParserType.ResultType
-            do {
-                parsedObject = try requestOptions.parser.parseForResult(serializedResponseValue, response: response.response)
-            } catch let error {
-                logger.clientDidEncounterParseError(requestOptions: requestOptions,
-                                                    request: response.request,
-                                                    response: response.response,
-                                                    responseData: response.data,
-                                                    parseError: error)
-                return .failure(error: HTTPClient.Error.cantParseSerializedResponse(underlyingError: error))
-            }
+        // 4) parsing error
+        let parsedObject: ParserType.ResultType
+        do {
+            parsedObject = try requestOptions.parser.parseForResult(serializedResponseValue, response: response.response)
+        } catch let error {
+            logger.clientDidEncounterParseError(requestOptions: requestOptions,
+                                                request: response.request,
+                                                response: response.response,
+                                                responseData: response.data,
+                                                parseError: error)
+            return .failure(error: HTTPClient.Error.cantParseSerializedResponse(underlyingError: error))
+        }
 
-            return .success(result: parsedObject)
+        return .success(result: parsedObject)
     }
 
 }
