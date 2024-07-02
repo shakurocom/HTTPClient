@@ -1,7 +1,7 @@
 ![Shakuro HTTPClient](Resources/title_image.png)
 <br><br>
 # HTTPClient
-![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.1.4-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-green.svg)
 
@@ -16,8 +16,8 @@ HTTPClient is a Swift library designed to abstract away access to Alamofire. The
 
 ## Requirements
 
-- iOS 11.0+
-- Xcode 11.0+
+- iOS 13.0+
+- Xcode 15.0+
 - Swift 5.0+
 
 ## Installation
