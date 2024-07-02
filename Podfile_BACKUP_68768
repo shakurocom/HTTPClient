@@ -1,6 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
+<<<<<<< HEAD
+platform :ios, '12.0'
+=======
 platform :ios, '13.0'
+>>>>>>> master
 
 use_frameworks!
 
