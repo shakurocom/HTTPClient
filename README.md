@@ -16,7 +16,7 @@ HTTPClient is a Swift library designed to abstract away access to Alamofire. The
 
 ## Requirements
 
-- iOS 11.0+
+- iOS 12.0+
 - Xcode 11.0+
 - Swift 5.0+
 

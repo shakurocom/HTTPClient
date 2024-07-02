@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		534B6E98C98CB32F21624ACE /* Pods_HTTPClient_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F4DA3ADE58BC09317F4D7E3 /* Pods_HTTPClient_Example.framework */; };
 		A5716D99271E7E6400844212 /* ExampleHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5716D98271E7E6400844212 /* ExampleHTTPClient.swift */; };
 		A5716D9C271E850A00844212 /* ExampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5716D9B271E850A00844212 /* ExampleCell.swift */; };
 		A5B34F5C27019163005F23C5 /* ExampleHTTPLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B34F5B27019163005F23C5 /* ExampleHTTPLogger.swift */; };
@@ -36,9 +37,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6F4DA3ADE58BC09317F4D7E3 /* Pods_HTTPClient_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTTPClient_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8207948BF38D6EF47AC13328 /* Pods-HTTPClient_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPClient_Example.release.xcconfig"; path = "Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example.release.xcconfig"; sourceTree = "<group>"; };
 		A5716D98271E7E6400844212 /* ExampleHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleHTTPClient.swift; sourceTree = "<group>"; };
 		A5716D9B271E850A00844212 /* ExampleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleCell.swift; sourceTree = "<group>"; };
 		A5B34F5B27019163005F23C5 /* ExampleHTTPLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleHTTPLogger.swift; sourceTree = "<group>"; };
+		EB8CC6F284E490694D830CCD /* Pods-HTTPClient_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPClient_Example.debug.xcconfig"; path = "Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F006A29626989C1D00F0A062 /* HTTPClient_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HTTPClient_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0B2E9D526EA39D600CCA6B9 /* ExampleParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleParser.swift; sourceTree = "<group>"; };
 		F0B2E9D726EA3AF800CCA6B9 /* ExampleAPIEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleAPIEndPoint.swift; sourceTree = "<group>"; };
@@ -57,6 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F006A29726989C1D00F0A062 /* HTTPClient_Framework.framework in Frameworks */,
+				534B6E98C98CB32F21624ACE /* Pods_HTTPClient_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				F006A29626989C1D00F0A062 /* HTTPClient_Framework.framework */,
+				6F4DA3ADE58BC09317F4D7E3 /* Pods_HTTPClient_Example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -74,6 +80,8 @@
 		3A3D05B6BB358E302163418A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				EB8CC6F284E490694D830CCD /* Pods-HTTPClient_Example.debug.xcconfig */,
+				8207948BF38D6EF47AC13328 /* Pods-HTTPClient_Example.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -153,11 +161,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F0EBCAFF26989948006A2695 /* Build configuration list for PBXNativeTarget "HTTPClient_Example" */;
 			buildPhases = (
+				ADC4D3391548DA3ACDBD1990 /* [CP] Check Pods Manifest.lock */,
 				F0EBCB6126989B84006A2695 /* Swiftlint script */,
 				F0EBCAE726989948006A2695 /* Sources */,
 				F0EBCAE826989948006A2695 /* Frameworks */,
 				F0EBCAE926989948006A2695 /* Resources */,
 				F006A29926989C1D00F0A062 /* Embed Frameworks */,
+				D5740E3C0FDFEFB8633DBFFC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -174,8 +184,9 @@
 		F0EBCAE326989948006A2695 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1310;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					F0EBCAEA26989948006A2695 = {
 						CreatedOnToolsVersion = 12.5;
@@ -214,8 +225,48 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		ADC4D3391548DA3ACDBD1990 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HTTPClient_Example-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D5740E3C0FDFEFB8633DBFFC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		F0EBCB6126989B84006A2695 /* Swiftlint script */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -308,6 +359,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -322,7 +374,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -369,6 +421,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -377,7 +430,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -389,13 +442,15 @@
 		};
 		F0EBCB0026989948006A2695 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB8CC6F284E490694D830CCD /* Pods-HTTPClient_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MW2UF479VW;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/HTTPClient_Example/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -409,13 +464,15 @@
 		};
 		F0EBCB0126989948006A2695 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8207948BF38D6EF47AC13328 /* Pods-HTTPClient_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MW2UF479VW;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/HTTPClient_Example/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

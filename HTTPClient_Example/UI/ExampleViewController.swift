@@ -19,7 +19,11 @@ class ExampleViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadContributors()
+        if #available(iOS 13.0, *) {
+            loadContributorsAsync()
+        } else {
+            loadContributors()
+        }
     }
 
 }
@@ -67,6 +71,35 @@ private extension ExampleViewController {
                 }
             })
         })
+    }
+
+    @available(iOS 13.0, *)
+    @MainActor
+    private func loadContributorsAsync() {
+        activityIndicator.startAnimating()
+        let requestOptions = HTTPClient.RequestOptions(
+            endpoint: ExampleAPIEndPoint(path: .contributors),
+            method: .get,
+            parser: ExampleParser(),
+            urlQueryParameters: nil,
+            bodyParameters: nil)
+        Task { [weak self] in
+            guard let strongSelf = self else { return }
+            let result = await strongSelf.client.sendRequest(options: requestOptions)
+            Task { @MainActor [weak self] in
+                guard let strongSelf = self else { return }
+                strongSelf.activityIndicator.stopAnimating()
+                switch result {
+                case .success(let contributors):
+                    strongSelf.contributors = contributors
+                    strongSelf.tableView.reloadData()
+                case .cancelled:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
 
 }
