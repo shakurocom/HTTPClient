@@ -8,13 +8,13 @@ workspace 'HTTPClient'
 
 target 'HTTPClient_Framework' do
     project 'HTTPClient_Framework.xcodeproj'
-    pod 'Shakuro.CommonTypes', '1.1.5'
+    pod 'Shakuro.CommonTypes', '1.1.6'
     pod 'Alamofire', '5.9.1'
 end
 
 target 'HTTPClient_Example' do
     project 'HTTPClient_Example.xcodeproj'
     pod 'SwiftLint', '0.43.1'
-    pod 'Shakuro.CommonTypes', '1.1.5'
+    pod 'Shakuro.CommonTypes', '1.1.6'
     pod 'Alamofire', '5.9.1'
 end
