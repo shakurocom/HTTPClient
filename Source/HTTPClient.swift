@@ -8,25 +8,29 @@ import Shakuro_CommonTypes
 import Foundation
 
 public protocol HTTPClientProtocol: Sendable {
-    var httpClient: HTTPClient { get }
+
+    associatedtype EndpointType: HTTPClientAPIEndPoint
+
+    var httpClient: HTTPClient<EndpointType> { get }
+
 }
 
 public extension HTTPClientProtocol {
 
     func sendRequest<ParserType: HTTPClientParser>(
-        options: HTTPClient.RequestOptions<ParserType>,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>,
         completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void) -> Alamofire.Request {
             return httpClient.sendRequest(options: options, completion: completion)
         }
 
     func sendRequest<ParserType: HTTPClientParser>(
-        options: HTTPClient.RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+        options: HTTPClientRequestOptions<ParserType, EndpointType>) async -> CancellableAsyncResult<ParserType.ResultType> {
             return await httpClient.sendRequest(options: options)
         }
 
     func upload<ParserType: HTTPClientParser>(
         multipartFormData: Alamofire.MultipartFormData,
-        options: HTTPClient.RequestOptions<ParserType>,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>,
         completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void) -> Alamofire.Request {
             return httpClient.upload(multipartFormData: multipartFormData, options: options, completion: completion)
         }
@@ -37,7 +41,7 @@ public extension HTTPClientProtocol {
 
 }
 
-public final class HTTPClient: Sendable {
+public final class HTTPClient<EndpointType: HTTPClientAPIEndPoint>: Sendable {
 
     // submodules
     private let session: Alamofire.Session
@@ -77,7 +81,7 @@ public final class HTTPClient: Sendable {
     }
 
     public func sendRequest<ParserType: HTTPClientParser>(
-        options: RequestOptions<ParserType>,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>,
         completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
     -> Alamofire.Request {
         let requestPrefab = formRequest(options: options)
@@ -92,7 +96,7 @@ public final class HTTPClient: Sendable {
 
     public func upload<ParserType: HTTPClientParser>(
         data: Data,
-        options: RequestOptions<ParserType>,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>,
         completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
     -> Alamofire.Request {
         let requestPrefab = formRequest(options: options)
@@ -108,7 +112,7 @@ public final class HTTPClient: Sendable {
     /// Uploads multi-part form data.
     public func upload<ParserType: HTTPClientParser>(
         multipartFormData: Alamofire.MultipartFormData,
-        options: RequestOptions<ParserType>,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>,
         completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
     -> Alamofire.Request {
         let requestPrefab = formRequest(options: options)
@@ -127,19 +131,20 @@ public final class HTTPClient: Sendable {
 
 public extension HTTPClient {
 
-    func sendRequest<ParserType: HTTPClientParser>(options: RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
-        let requestPrefab = formRequest(options: options)
-        let request = session.request(requestPrefab)
-        let result = await finalizeRequest(request,
-                                           options: options,
-                                           resolvedHeaders: requestPrefab.headers,
-                                           acceptableContentTypes: requestPrefab.acceptableContentTypes())
-        return result
-    }
+    func sendRequest<ParserType: HTTPClientParser>(
+        options: HTTPClientRequestOptions<ParserType, EndpointType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+            let requestPrefab = formRequest(options: options)
+            let request = session.request(requestPrefab)
+            let result = await finalizeRequest(request,
+                                               options: options,
+                                               resolvedHeaders: requestPrefab.headers,
+                                               acceptableContentTypes: requestPrefab.acceptableContentTypes())
+            return result
+        }
 
     func upload<ParserType: HTTPClientParser>(
         data: Data,
-        options: RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+        options: HTTPClientRequestOptions<ParserType, EndpointType>) async -> CancellableAsyncResult<ParserType.ResultType> {
             let requestPrefab = formRequest(options: options)
             let request = session.upload(data, with: requestPrefab)
             let result = await finalizeRequest(request,
@@ -152,7 +157,7 @@ public extension HTTPClient {
     /// Uploads multi-part form data.
     func upload<ParserType: HTTPClientParser>(
         multipartFormData: Alamofire.MultipartFormData,
-        options: RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+        options: HTTPClientRequestOptions<ParserType, EndpointType>) async -> CancellableAsyncResult<ParserType.ResultType> {
             let requestPrefab = formRequest(options: options)
             let request = session.upload(multipartFormData: multipartFormData, with: requestPrefab)
             let result = await finalizeRequest(request,
@@ -177,7 +182,7 @@ private extension HTTPClient {
         internal let timeoutInterval: TimeInterval
         internal let urlQueryParameters: [String: any Any & Sendable]?
         internal let urlQueryParametersAddArrayBrackets: Bool
-        internal let bodyParameters: BodyParameters?
+        internal let bodyParameters: HTTPClientBodyParameters?
 
         internal func asURLRequest() throws -> URLRequest {
             var request = try URLRequest(url: urlString, method: method, headers: headers)
@@ -203,22 +208,23 @@ private extension HTTPClient {
 
     }
 
-    private func formRequest<ParserType: HTTPClientParser>(options: RequestOptions<ParserType>) -> RequestData {
-        var resolvedHeaders = Alamofire.HTTPHeaders()
-        commonHeaders().forEach({ resolvedHeaders.add($0) })
-        options.headers.forEach({ resolvedHeaders.add($0) })
-        return RequestData(urlString: options.endpoint.urlString(),
-                           method: options.method,
-                           headers: resolvedHeaders,
-                           timeoutInterval: options.timeoutInterval,
-                           urlQueryParameters: options.urlQueryParameters,
-                           urlQueryParametersAddArrayBrackets: options.urlQueryParametersAddArrayBrackets,
-                           bodyParameters: options.bodyParameters)
-    }
+    private func formRequest<ParserType: HTTPClientParser>(
+        options: HTTPClientRequestOptions<ParserType, EndpointType>) -> RequestData {
+            var resolvedHeaders = Alamofire.HTTPHeaders()
+            commonHeaders().forEach({ resolvedHeaders.add($0) })
+            options.headers.forEach({ resolvedHeaders.add($0) })
+            return RequestData(urlString: options.endpoint.urlString(),
+                               method: options.method,
+                               headers: resolvedHeaders,
+                               timeoutInterval: options.timeoutInterval,
+                               urlQueryParameters: options.urlQueryParameters,
+                               urlQueryParametersAddArrayBrackets: options.urlQueryParametersAddArrayBrackets,
+                               bodyParameters: options.bodyParameters)
+        }
 
     private func finalizeRequest<ParserType: HTTPClientParser>(
         _ aRequest: Alamofire.DataRequest,
-        options: RequestOptions<ParserType>,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>,
         resolvedHeaders: Alamofire.HTTPHeaders,
         acceptableContentTypes: [String]) async -> CancellableAsyncResult<ParserType.ResultType> {
             let request: Alamofire.DataRequest
@@ -246,7 +252,7 @@ private extension HTTPClient {
 
     private func finalizeRequest<ParserType: HTTPClientParser>(
         _ aRequest: Alamofire.DataRequest,
-        options: RequestOptions<ParserType>,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>,
         resolvedHeaders: Alamofire.HTTPHeaders,
         acceptableContentTypes: [String],
         completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
@@ -276,7 +282,7 @@ private extension HTTPClient {
 
     private static func applyParser<ParserType: HTTPClientParser, ResponseValue: Sendable>(
         response: AFDataResponse<ResponseValue>,
-        requestOptions: HTTPClient.RequestOptions<ParserType>,
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
         logger: HTTPClientLogger) -> CancellableAsyncResult<ParserType.ResultType> {
         if let error = response.error, error.isExplicitlyCancelledError {
             logger.requestWasCancelled(requestOptions: requestOptions,
@@ -316,7 +322,7 @@ private extension HTTPClient {
                                                         response: response.response,
                                                         responseData: response.data,
                                                         serializationError: error)
-            return .failure(error: HTTPClient.Error.cantSerializeResponseData(underlyingError: error))
+            return .failure(error: HTTPClientError.cantSerializeResponseData(underlyingError: error))
         }
 
         // 4) parsing error
@@ -329,7 +335,7 @@ private extension HTTPClient {
                                                 response: response.response,
                                                 responseData: response.data,
                                                 parseError: error)
-            return .failure(error: HTTPClient.Error.cantParseSerializedResponse(underlyingError: error))
+            return .failure(error: HTTPClientError.cantParseSerializedResponse(underlyingError: error))
         }
 
         return .success(result: parsedObject)

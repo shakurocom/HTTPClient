@@ -44,7 +44,7 @@ private extension ExampleViewController {
 
     private func loadContributors() {
         activityIndicator.startAnimating()
-        let requestOptions = HTTPClient.RequestOptions(
+        let requestOptions = HTTPClientRequestOptions(
             endpoint: ExampleAPIEndPoint(path: .contributors),
             method: .get,
             parser: ExampleParser(),
@@ -72,7 +72,7 @@ private extension ExampleViewController {
     @MainActor
     private func loadContributorsAsync() {
         activityIndicator.startAnimating()
-        let requestOptions = HTTPClient.RequestOptions(
+        let requestOptions = HTTPClientRequestOptions(
             endpoint: ExampleAPIEndPoint(path: .contributors),
             method: .get,
             parser: ExampleParser(),

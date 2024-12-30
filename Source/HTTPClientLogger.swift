@@ -10,49 +10,56 @@ public protocol HTTPClientLogger {
 
     /// Request was formed with provided options and headers.
     /// Called before adding validator/serializers to said request and starting it.
-    func clientDidCreateRequest<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                              resolvedHeaders: Alamofire.HTTPHeaders)
+    func clientDidCreateRequest<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        resolvedHeaders: Alamofire.HTTPHeaders)
 
     /// Called before parser is applied to response.
-    func clientDidReceiveResponse<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                request: URLRequest?,
-                                                                response: HTTPURLResponse?,
-                                                                responseData: Data?,
-                                                                responseError: Error?)
+    func clientDidReceiveResponse<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        responseError: Error?)
 
     /// Request is marked as cancelled. no parsing will be done.
-    func requestWasCancelled<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                           request: URLRequest?,
-                                                           response: HTTPURLResponse?,
-                                                           responseData: Data?)
+    func requestWasCancelled<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?)
 
     /// `parseForError()` returned error.
-    func parserDidFindError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                          request: URLRequest?,
-                                                          response: HTTPURLResponse?,
-                                                          responseData: Data?,
-                                                          parsedError: Swift.Error)
+    func parserDidFindError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        parsedError: Swift.Error)
 
     /// Some network error happened, that was not handled by parser directly.
-    func clientDidEncounterNetworkError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                      request: URLRequest?,
-                                                                      response: HTTPURLResponse?,
-                                                                      responseData: Data?,
-                                                                      networkError: Swift.Error)
+    func clientDidEncounterNetworkError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        networkError: Swift.Error)
 
     /// Error during serialization of response data (before parsing)
-    func clientDidEncounterSerializationError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                            request: URLRequest?,
-                                                                            response: HTTPURLResponse?,
-                                                                            responseData: Data?,
-                                                                            serializationError: Swift.Error)
+    func clientDidEncounterSerializationError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        serializationError: Swift.Error)
 
     /// Error during parsing of serialized data
-    func clientDidEncounterParseError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                    request: URLRequest?,
-                                                                    response: HTTPURLResponse?,
-                                                                    responseData: Data?,
-                                                                    parseError: Swift.Error)
+    func clientDidEncounterParseError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        parseError: Swift.Error)
 
 }
 
@@ -60,43 +67,50 @@ open class HTTPClientLoggerNone: HTTPClientLogger {
 
     public init() {}
 
-    open func clientDidCreateRequest<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                   resolvedHeaders: Alamofire.HTTPHeaders) {}
+    open func clientDidCreateRequest<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        resolvedHeaders: Alamofire.HTTPHeaders) { }
 
-    open func clientDidReceiveResponse<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                     request: URLRequest?,
-                                                                     response: HTTPURLResponse?,
-                                                                     responseData: Data?,
-                                                                     responseError: Error?) {}
+    open func clientDidReceiveResponse<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        responseError: Error?) {}
 
-    open func requestWasCancelled<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                request: URLRequest?,
-                                                                response: HTTPURLResponse?,
-                                                                responseData: Data?) {}
+    open func requestWasCancelled<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?) {}
 
-    open func parserDidFindError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                               request: URLRequest?,
-                                                               response: HTTPURLResponse?,
-                                                               responseData: Data?,
-                                                               parsedError: Swift.Error) {}
+    open func parserDidFindError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        parsedError: Swift.Error) {}
 
-    open func clientDidEncounterNetworkError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                           request: URLRequest?,
-                                                                           response: HTTPURLResponse?,
-                                                                           responseData: Data?,
-                                                                           networkError: Swift.Error) {}
+    open func clientDidEncounterNetworkError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        networkError: Swift.Error) {}
 
-    open func clientDidEncounterSerializationError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                                 request: URLRequest?,
-                                                                                 response: HTTPURLResponse?,
-                                                                                 responseData: Data?,
-                                                                                 serializationError: Swift.Error) {}
+    open func clientDidEncounterSerializationError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        serializationError: Swift.Error) {}
 
-    open func clientDidEncounterParseError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                         request: URLRequest?,
-                                                                         response: HTTPURLResponse?,
-                                                                         responseData: Data?,
-                                                                         parseError: Swift.Error) {}
+    open func clientDidEncounterParseError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        parseError: Swift.Error) {}
 
 }
 
@@ -151,113 +165,120 @@ open class HTTPClientLoggerFull {
 
 extension HTTPClientLoggerFull: HTTPClientLogger {
 
-    public func clientDidCreateRequest<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                     resolvedHeaders: HTTPHeaders) {
-        var requestDescription = "Request: "
-        requestDescription.append("\n\(tab)url: \(requestOptions.endpoint.urlString())")
-        requestDescription.append("\n\(tab)timeoutInterval: \(requestOptions.timeoutInterval)")
-        requestDescription.append("\n\(tab)method: \(requestOptions.method)")
-        requestDescription.append("\n\(tab)allHTTPHeaderFields: \(resolvedHeaders)")
-        if let urlQueryParameters = requestOptions.urlQueryParameters {
-            let brakets = requestOptions.urlQueryParametersAddArrayBrackets
-            requestDescription.append("\n\(tab)queyParameters (array brakets: \(brakets)): \(censorParameters(urlQueryParameters))")
-        }
-        if var bodyParameters = requestOptions.bodyParameters {
-            switch bodyParameters {
-            case .httpBody(let arrayBrakets, let parameters):
-                bodyParameters = .httpBody(arrayBrakets: arrayBrakets, parameters: censorParameters(parameters))
-            case .json(let parameters):
-                if let typedParameters = parameters as? [String: any Any & Sendable] {
-                    bodyParameters = .json(parameters: censorParameters(typedParameters))
-                } else {
-                    bodyParameters = .json(parameters: parameters)
-                }
+    public func clientDidCreateRequest<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        resolvedHeaders: HTTPHeaders) {
+            var requestDescription = "Request: "
+            requestDescription.append("\n\(tab)url: \(requestOptions.endpoint.urlString())")
+            requestDescription.append("\n\(tab)timeoutInterval: \(requestOptions.timeoutInterval)")
+            requestDescription.append("\n\(tab)method: \(requestOptions.method)")
+            requestDescription.append("\n\(tab)allHTTPHeaderFields: \(resolvedHeaders)")
+            if let urlQueryParameters = requestOptions.urlQueryParameters {
+                let brakets = requestOptions.urlQueryParametersAddArrayBrackets
+                requestDescription.append("\n\(tab)queyParameters (array brakets: \(brakets)): \(censorParameters(urlQueryParameters))")
             }
-            requestDescription.append("\n\(tab)parameters: \(bodyParameters)")
-        }
-        if let authCredentialActual = requestOptions.authCredential {
-            let credentialForLog = URLCredential(user: censoredValue,
-                                                 password: censoredValue,
-                                                 persistence: authCredentialActual.persistence)
-            requestDescription.append("\n\(tab)authCredential: \(credentialForLog)")
-        }
+            if var bodyParameters = requestOptions.bodyParameters {
+                switch bodyParameters {
+                case .httpBody(let arrayBrakets, let parameters):
+                    bodyParameters = .httpBody(arrayBrakets: arrayBrakets, parameters: censorParameters(parameters))
+                case .json(let parameters):
+                    if let typedParameters = parameters as? [String: any Any & Sendable] {
+                        bodyParameters = .json(parameters: censorParameters(typedParameters))
+                    } else {
+                        bodyParameters = .json(parameters: parameters)
+                    }
+                }
+                requestDescription.append("\n\(tab)parameters: \(bodyParameters)")
+            }
+            if let authCredentialActual = requestOptions.authCredential {
+                let credentialForLog = URLCredential(user: censoredValue,
+                                                     password: censoredValue,
+                                                     persistence: authCredentialActual.persistence)
+                requestDescription.append("\n\(tab)authCredential: \(credentialForLog)")
+            }
 
-        log(requestDescription)
-    }
-
-    public func clientDidReceiveResponse<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                       request: URLRequest?,
-                                                                       response: HTTPURLResponse?,
-                                                                       responseData: Data?,
-                                                                       responseError: Error?) {
-        let codeString: String
-        if let statusCode = response?.statusCode {
-            codeString = "\(statusCode)"
-        } else {
-            codeString = "unknown"
-        }
-        let responseHeaderDescription = response?.allHeaderFields.description ?? "No Response Header"
-        let responseDataDescription: String
-        if let responseRawData = responseData, !responseRawData.isEmpty,
-           let responseDataDescriptionActual = generateResponseDataDebugDescription(responseRawData) {
-            responseDataDescription = responseDataDescriptionActual
-        } else {
-            responseDataDescription = "No Response Data"
-        }
-        let errorDescription: String
-        if let error = responseError {
-            errorDescription = "\(error)"
-        } else {
-            errorDescription = "No Error"
+            log(requestDescription)
         }
 
-        var responseDescription = "Response:"
-        responseDescription.append("\n\(tab)url: \(requestOptions.endpoint.urlString())")
-        responseDescription.append("\n\(tab)status code: \(codeString)")
-        responseDescription.append("\n\(tab)error: \(errorDescription)")
-        responseDescription.append("\n\(tab)headers:\n\(responseHeaderDescription)")
-        responseDescription.append("\n\(tab)data:\n\(responseDataDescription)")
+    public func clientDidReceiveResponse<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        responseError: Error?) {
+            let codeString: String
+            if let statusCode = response?.statusCode {
+                codeString = "\(statusCode)"
+            } else {
+                codeString = "unknown"
+            }
+            let responseHeaderDescription = response?.allHeaderFields.description ?? "No Response Header"
+            let responseDataDescription: String
+            if let responseRawData = responseData, !responseRawData.isEmpty,
+               let responseDataDescriptionActual = generateResponseDataDebugDescription(responseRawData) {
+                responseDataDescription = responseDataDescriptionActual
+            } else {
+                responseDataDescription = "No Response Data"
+            }
+            let errorDescription: String
+            if let error = responseError {
+                errorDescription = "\(error)"
+            } else {
+                errorDescription = "No Error"
+            }
 
-        log(responseDescription)
-    }
+            var responseDescription = "Response:"
+            responseDescription.append("\n\(tab)url: \(requestOptions.endpoint.urlString())")
+            responseDescription.append("\n\(tab)status code: \(codeString)")
+            responseDescription.append("\n\(tab)error: \(errorDescription)")
+            responseDescription.append("\n\(tab)headers:\n\(responseHeaderDescription)")
+            responseDescription.append("\n\(tab)data:\n\(responseDataDescription)")
 
-    public func requestWasCancelled<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                  request: URLRequest?,
-                                                                  response: HTTPURLResponse?,
-                                                                  responseData: Data?) {
+            log(responseDescription)
+        }
+
+    public func requestWasCancelled<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?) {
+            // handled by more generic clientDidReceiveResponse()
+        }
+
+    public func parserDidFindError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        parsedError: Error) {
         // handled by more generic clientDidReceiveResponse()
     }
 
-    public func parserDidFindError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                 request: URLRequest?,
-                                                                 response: HTTPURLResponse?,
-                                                                 responseData: Data?,
-                                                                 parsedError: Error) {
+    public func clientDidEncounterNetworkError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        networkError: Error) {
         // handled by more generic clientDidReceiveResponse()
     }
 
-    public func clientDidEncounterNetworkError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                             request: URLRequest?,
-                                                                             response: HTTPURLResponse?,
-                                                                             responseData: Data?,
-                                                                             networkError: Error) {
-        // handled by more generic clientDidReceiveResponse()
-    }
+    public func clientDidEncounterSerializationError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        serializationError: Error) {
+            // usually handled by parser itself
+        }
 
-    public func clientDidEncounterSerializationError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                                   request: URLRequest?,
-                                                                                   response: HTTPURLResponse?,
-                                                                                   responseData: Data?,
-                                                                                   serializationError: Error) {
-        // usually handled by parser itself
-    }
-
-    public func clientDidEncounterParseError<ParserType: HTTPClientParser>(requestOptions: HTTPClient.RequestOptions<ParserType>,
-                                                                           request: URLRequest?,
-                                                                           response: HTTPURLResponse?,
-                                                                           responseData: Data?,
-                                                                           parseError: Error) {
-        // usually handled by parser itself
-    }
+    public func clientDidEncounterParseError<ParserType: HTTPClientParser, EndpointType>(
+        requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
+        request: URLRequest?,
+        response: HTTPURLResponse?,
+        responseData: Data?,
+        parseError: Error) {
+            // usually handled by parser itself
+        }
 
 }

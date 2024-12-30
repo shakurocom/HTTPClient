@@ -21,11 +21,7 @@ extension AFError: NetworkErrorConvertible {
 
 }
 
-extension HTTPClient {
-
-    public enum Error: Swift.Error {
-        case cantSerializeResponseData(underlyingError: Swift.Error?)
-        case cantParseSerializedResponse(underlyingError: Swift.Error?)
-    }
-
+public enum HTTPClientError: Swift.Error {
+    case cantSerializeResponseData(underlyingError: Swift.Error?)
+    case cantParseSerializedResponse(underlyingError: Swift.Error?)
 }

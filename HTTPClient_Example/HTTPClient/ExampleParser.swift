@@ -19,7 +19,7 @@ class ExampleParser: HTTPClientParser {
         guard let data = responseData,
               let json = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]]
         else {
-            throw HTTPClient.Error.cantSerializeResponseData(underlyingError: nil)
+            throw HTTPClientError.cantSerializeResponseData(underlyingError: nil)
         }
         return json
     }
