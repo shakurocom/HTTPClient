@@ -12,6 +12,6 @@ import Foundation
 /// good: `https://www.random.org/strings`
 ///
 /// bad: `https://www.random.org/strings/?num=10&len=10&digits=on&unique=on&format=plain&rnd=new`
-public protocol HTTPClientAPIEndPoint {
+public protocol HTTPClientAPIEndPoint: Sendable {
     func urlString() -> String
 }

@@ -7,18 +7,39 @@ import Alamofire
 import Shakuro_CommonTypes
 import Foundation
 
-open class HTTPClient {
+public protocol HTTPClientProtocol: Sendable {
+    var httpClient: HTTPClient { get }
+}
+
+public extension HTTPClientProtocol {
+
+    func sendRequest<ParserType: HTTPClientParser>(
+        options: HTTPClient.RequestOptions<ParserType>,
+        completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void) -> Alamofire.Request {
+            return httpClient.sendRequest(options: options, completion: completion)
+        }
+
+    func sendRequest<ParserType: HTTPClientParser>(
+        options: HTTPClient.RequestOptions<ParserType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+            return await httpClient.sendRequest(options: options)
+        }
+
+}
+
+public final class HTTPClient: Sendable {
 
     // submodules
     private let session: Alamofire.Session
     private let callbackQueue: DispatchQueue
     private let logger: HTTPClientLogger
+    private let commonHeadersInternal: [Alamofire.HTTPHeader]
 
     // MARK: - Initialization
 
     public init(name: String,
                 configuration: URLSessionConfiguration? = nil,
-                logger: HTTPClientLogger = HTTPClientLoggerNone()) {
+                logger: HTTPClientLogger = HTTPClientLoggerNone(),
+                commonHeaders: [Alamofire.HTTPHeader] = []) {
         let config: URLSessionConfiguration
         if let realConfig = configuration {
             config = realConfig
@@ -29,23 +50,24 @@ open class HTTPClient {
         self.session = Alamofire.Session(configuration: config)
         self.callbackQueue = DispatchQueue(label: "\(name).callbackQueue", attributes: DispatchQueue.Attributes.concurrent)
         self.logger = logger
+        self.commonHeadersInternal = commonHeaders
     }
 
     // MARK: - Public
 
     /// Headers added to all request, performed with this HTTPClient.
     /// Default value is `[]`.
-    open func commonHeaders() -> [Alamofire.HTTPHeader] {
-        return []
+    public func commonHeaders() -> [Alamofire.HTTPHeader] {
+        return commonHeadersInternal
     }
 
-    public func cancelAllTasks(completingOnQueue queue: DispatchQueue = .main, completion: (() -> Void)? = nil) {
+    public func cancelAllTasks(completingOnQueue queue: DispatchQueue = .main, completion: (@Sendable () -> Void)? = nil) {
         session.cancelAllRequests(completingOnQueue: queue, completion: completion)
     }
 
     public func sendRequest<ParserType: HTTPClientParser>(
         options: RequestOptions<ParserType>,
-        completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
+        completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
     -> Alamofire.Request {
         let requestPrefab = formRequest(options: options)
         let request = session.request(requestPrefab)
@@ -60,7 +82,7 @@ open class HTTPClient {
     public func upload<ParserType: HTTPClientParser>(
         data: Data,
         options: RequestOptions<ParserType>,
-        completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
+        completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
     -> Alamofire.Request {
         let requestPrefab = formRequest(options: options)
         let request = session.upload(data, with: requestPrefab)
@@ -76,7 +98,7 @@ open class HTTPClient {
     public func upload<ParserType: HTTPClientParser>(
         multipartFormData: Alamofire.MultipartFormData,
         options: RequestOptions<ParserType>,
-        completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
+        completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
     -> Alamofire.Request {
         let requestPrefab = formRequest(options: options)
         let request = session.upload(multipartFormData: multipartFormData, with: requestPrefab)
@@ -142,7 +164,7 @@ private extension HTTPClient {
         internal let method: Alamofire.HTTPMethod
         internal let headers: Alamofire.HTTPHeaders
         internal let timeoutInterval: TimeInterval
-        internal let urlQueryParameters: [String: Any]?
+        internal let urlQueryParameters: [String: any Sendable]?
         internal let urlQueryParametersAddArrayBrackets: Bool
         internal let bodyParameters: BodyParameters?
 
@@ -216,7 +238,7 @@ private extension HTTPClient {
         options: RequestOptions<ParserType>,
         resolvedHeaders: Alamofire.HTTPHeaders,
         acceptableContentTypes: [String],
-        completion: @escaping (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
+        completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void)
     -> Alamofire.Request {
         var request = aRequest
         if let credential = options.authCredential {
@@ -241,11 +263,10 @@ private extension HTTPClient {
         return request
     }
 
-    private static func applyParser<ParserType: HTTPClientParser, ResponseValue>(
+    private static func applyParser<ParserType: HTTPClientParser, ResponseValue: Sendable>(
         response: AFDataResponse<ResponseValue>,
         requestOptions: HTTPClient.RequestOptions<ParserType>,
-        logger: HTTPClientLogger) ->
-    CancellableAsyncResult<ParserType.ResultType> {
+        logger: HTTPClientLogger) -> CancellableAsyncResult<ParserType.ResultType> {
         if let error = response.error, error.isExplicitlyCancelledError {
             logger.requestWasCancelled(requestOptions: requestOptions,
                                        request: response.request,

@@ -51,7 +51,7 @@ private extension ExampleViewController {
             urlQueryParameters: nil,
             bodyParameters: nil)
         request = client.sendRequest(options: requestOptions, completion: { [weak self] (result) in
-            DispatchQueue.main.async(execute: {
+            Task(operation: { @MainActor [weak self] in
                 guard let strongSelf = self else {
                     return
                 }
@@ -78,22 +78,20 @@ private extension ExampleViewController {
             parser: ExampleParser(),
             urlQueryParameters: nil,
             bodyParameters: nil)
-        Task { @MainActor [weak self] in
-            let result = await self?.client.sendRequest(options: requestOptions)
-            guard let strongResult = result, let strongSelf = self else {
-                return
-            }
-            strongSelf.activityIndicator.stopAnimating()
-            switch strongResult {
+        let httpClient = client
+        Task(operation: { @MainActor [weak self] in
+            let result = await httpClient.sendRequest(options: requestOptions)
+            self?.activityIndicator.stopAnimating()
+            switch result {
             case .success(let contributors):
-                strongSelf.contributors = contributors
-                strongSelf.tableView.reloadData()
+                self?.contributors = contributors
+                self?.tableView.reloadData()
             case .cancelled:
                 break
             case .failure(let error):
                 print(error)
             }
-        }
+        })
     }
 
 }

@@ -9,11 +9,11 @@ import Foundation
 extension HTTPClient {
 
     /// Sets appropriate value for 'Content-Type' header.
-    public enum BodyParameters: CustomStringConvertible {
+    public enum BodyParameters: CustomStringConvertible, Sendable {
 
         /// formData; URLEncoding with destination of httpBody
-        case httpBody(arrayBrakets: Bool, parameters: [String: Any])
-        case json(parameters: Any)
+        case httpBody(arrayBrakets: Bool, parameters: [String: any Sendable])
+        case json(parameters: any Sendable)
 
         public var description: String {
             switch self {
