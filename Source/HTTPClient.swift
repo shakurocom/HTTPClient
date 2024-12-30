@@ -24,6 +24,17 @@ public extension HTTPClientProtocol {
             return await httpClient.sendRequest(options: options)
         }
 
+    func upload<ParserType: HTTPClientParser>(
+        multipartFormData: Alamofire.MultipartFormData,
+        options: HTTPClient.RequestOptions<ParserType>,
+        completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void) -> Alamofire.Request {
+            return httpClient.upload(multipartFormData: multipartFormData, options: options, completion: completion)
+        }
+
+    func cancelAllTasks(completingOnQueue queue: DispatchQueue = .main, completion: (@Sendable () -> Void)? = nil) {
+        httpClient.cancelAllTasks(completingOnQueue: queue, completion: completion)
+    }
+
 }
 
 public final class HTTPClient: Sendable {
