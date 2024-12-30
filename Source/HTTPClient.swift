@@ -164,7 +164,7 @@ private extension HTTPClient {
         internal let method: Alamofire.HTTPMethod
         internal let headers: Alamofire.HTTPHeaders
         internal let timeoutInterval: TimeInterval
-        internal let urlQueryParameters: [String: any Sendable]?
+        internal let urlQueryParameters: [String: any Any & Sendable]?
         internal let urlQueryParametersAddArrayBrackets: Bool
         internal let bodyParameters: BodyParameters?
 

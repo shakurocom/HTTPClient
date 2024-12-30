@@ -15,7 +15,7 @@ extension HTTPClient {
         public let endpoint: HTTPClientAPIEndPoint
         public let method: Alamofire.HTTPMethod
         public let parser: ParserType
-        public let urlQueryParameters: [String: any Sendable]?
+        public let urlQueryParameters: [String: any Any & Sendable]?
         public let urlQueryParametersAddArrayBrackets: Bool
         public let bodyParameters: BodyParameters?
         /// Headers will be applied in this order (overriding previous ones if key is the same):
@@ -32,7 +32,7 @@ extension HTTPClient {
         public init(endpoint: HTTPClientAPIEndPoint,
                     method: Alamofire.HTTPMethod,
                     parser: ParserType,
-                    urlQueryParameters: [String: any Sendable]? = nil,
+                    urlQueryParameters: [String: any Any & Sendable]? = nil,
                     urlQueryParametersAddArrayBrackets: Bool = false,
                     bodyParameters: BodyParameters? = nil,
                     headers: [Alamofire.HTTPHeader] = [ContentType.applicationJSON.acceptHeader()],

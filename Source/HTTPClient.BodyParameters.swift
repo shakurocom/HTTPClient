@@ -12,8 +12,8 @@ extension HTTPClient {
     public enum BodyParameters: CustomStringConvertible, Sendable {
 
         /// formData; URLEncoding with destination of httpBody
-        case httpBody(arrayBrakets: Bool, parameters: [String: any Sendable])
-        case json(parameters: any Sendable)
+        case httpBody(arrayBrakets: Bool, parameters: [String: any Any & Sendable])
+        case json(parameters: any Any & Sendable)
 
         public var description: String {
             switch self {

@@ -126,7 +126,7 @@ open class HTTPClientLoggerFull {
         fatalError("abstract")
     }
 
-    private func censorParameters(_ parameters: [String: any Sendable]) -> [String: any Sendable] {
+    private func censorParameters(_ parameters: [String: any Any & Sendable]) -> [String: any Any & Sendable] {
         var censoredParameters = parameters
         for bannedParam in parametersToCensor where censoredParameters[bannedParam] != nil {
             censoredParameters[bannedParam] = censoredValue
@@ -167,7 +167,7 @@ extension HTTPClientLoggerFull: HTTPClientLogger {
             case .httpBody(let arrayBrakets, let parameters):
                 bodyParameters = .httpBody(arrayBrakets: arrayBrakets, parameters: censorParameters(parameters))
             case .json(let parameters):
-                if let typedParameters = parameters as? [String: any Sendable] {
+                if let typedParameters = parameters as? [String: any Any & Sendable] {
                     bodyParameters = .json(parameters: censorParameters(typedParameters))
                 } else {
                     bodyParameters = .json(parameters: parameters)
