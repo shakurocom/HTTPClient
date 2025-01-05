@@ -5,7 +5,7 @@
 import Foundation
 import HTTPClient_Framework
 
-class ExampleParser: HTTPClientParser {
+final class ExampleParser: HTTPClientParser {
 
     internal struct Contributor {
         internal let identifier: Int

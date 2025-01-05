@@ -5,7 +5,7 @@
 
 import Foundation
 
-public protocol HTTPClientParser {
+public protocol HTTPClientParser: Sendable {
 
     associatedtype ResultType
     associatedtype ResponseValueType

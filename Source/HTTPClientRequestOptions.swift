@@ -4,7 +4,7 @@
 
 import Alamofire
 
-public struct HTTPClientRequestOptions<ParserType: HTTPClientParser, EndpointType: HTTPClientAPIEndPoint> {
+public struct HTTPClientRequestOptions<ParserType: HTTPClientParser, EndpointType: HTTPClientAPIEndPoint>: Sendable {
 
     public let endpoint: EndpointType
     public let method: Alamofire.HTTPMethod

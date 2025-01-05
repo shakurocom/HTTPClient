@@ -6,7 +6,7 @@
 import Alamofire
 import Foundation
 
-public protocol HTTPClientLogger {
+public protocol HTTPClientLogger: Sendable {
 
     /// Request was formed with provided options and headers.
     /// Called before adding validator/serializers to said request and starting it.
@@ -63,49 +63,49 @@ public protocol HTTPClientLogger {
 
 }
 
-open class HTTPClientLoggerNone: HTTPClientLogger {
+public final class HTTPClientLoggerNone: HTTPClientLogger {
 
     public init() {}
 
-    open func clientDidCreateRequest<ParserType: HTTPClientParser, EndpointType>(
+    public func clientDidCreateRequest<ParserType: HTTPClientParser, EndpointType>(
         requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
         resolvedHeaders: Alamofire.HTTPHeaders) { }
 
-    open func clientDidReceiveResponse<ParserType: HTTPClientParser, EndpointType>(
+    public func clientDidReceiveResponse<ParserType: HTTPClientParser, EndpointType>(
         requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
         request: URLRequest?,
         response: HTTPURLResponse?,
         responseData: Data?,
         responseError: Error?) {}
 
-    open func requestWasCancelled<ParserType: HTTPClientParser, EndpointType>(
+    public func requestWasCancelled<ParserType: HTTPClientParser, EndpointType>(
         requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
         request: URLRequest?,
         response: HTTPURLResponse?,
         responseData: Data?) {}
 
-    open func parserDidFindError<ParserType: HTTPClientParser, EndpointType>(
+    public func parserDidFindError<ParserType: HTTPClientParser, EndpointType>(
         requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
         request: URLRequest?,
         response: HTTPURLResponse?,
         responseData: Data?,
         parsedError: Swift.Error) {}
 
-    open func clientDidEncounterNetworkError<ParserType: HTTPClientParser, EndpointType>(
+    public func clientDidEncounterNetworkError<ParserType: HTTPClientParser, EndpointType>(
         requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
         request: URLRequest?,
         response: HTTPURLResponse?,
         responseData: Data?,
         networkError: Swift.Error) {}
 
-    open func clientDidEncounterSerializationError<ParserType: HTTPClientParser, EndpointType>(
+    public func clientDidEncounterSerializationError<ParserType: HTTPClientParser, EndpointType>(
         requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
         request: URLRequest?,
         response: HTTPURLResponse?,
         responseData: Data?,
         serializationError: Swift.Error) {}
 
-    open func clientDidEncounterParseError<ParserType: HTTPClientParser, EndpointType>(
+    public func clientDidEncounterParseError<ParserType: HTTPClientParser, EndpointType>(
         requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
         request: URLRequest?,
         response: HTTPURLResponse?,
@@ -115,11 +115,12 @@ open class HTTPClientLoggerNone: HTTPClientLogger {
 }
 
 /// Full logger, intended for subclassing to provide actual method to output logs.
-open class HTTPClientLoggerFull {
+public final class HTTPClientLoggerFull {
 
     private let tab: String
     private let parametersToCensor: [String]
     private let censoredValue: String
+    private let logAction: @Sendable (_ message: String) -> Void
 
     /// - parameter tab: value used for indentation in multiline messages.
     ///         Default value is `    ` (4 spaces).
@@ -130,14 +131,12 @@ open class HTTPClientLoggerFull {
     ///         Default value is `xxxxxx`.
     public init(tab: String = "    ",
                 parametersToCensor: [String] = [],
-                censoredValue: String = "xxxxxx") {
+                censoredValue: String = "xxxxxx",
+                logAction: @escaping @Sendable (_ message: String) -> Void) {
         self.tab = tab
         self.parametersToCensor = parametersToCensor
         self.censoredValue = censoredValue
-    }
-
-    open func log(_ message: String) {
-        fatalError("abstract")
+        self.logAction = logAction
     }
 
     private func censorParameters(_ parameters: [String: any Any & Sendable]) -> [String: any Any & Sendable] {
@@ -148,7 +147,7 @@ open class HTTPClientLoggerFull {
         return censoredParameters
     }
 
-    open func generateResponseDataDebugDescription(_ responseData: Data?) -> String? {
+    public func generateResponseDataDebugDescription(_ responseData: Data?) -> String? {
         guard let data = responseData, !data.isEmpty else {
             return nil
         }
@@ -197,7 +196,7 @@ extension HTTPClientLoggerFull: HTTPClientLogger {
                 requestDescription.append("\n\(tab)authCredential: \(credentialForLog)")
             }
 
-            log(requestDescription)
+            logAction(requestDescription)
         }
 
     public func clientDidReceiveResponse<ParserType: HTTPClientParser, EndpointType>(
@@ -234,7 +233,7 @@ extension HTTPClientLoggerFull: HTTPClientLogger {
             responseDescription.append("\n\(tab)headers:\n\(responseHeaderDescription)")
             responseDescription.append("\n\(tab)data:\n\(responseDataDescription)")
 
-            log(responseDescription)
+            logAction(responseDescription)
         }
 
     public func requestWasCancelled<ParserType: HTTPClientParser, EndpointType>(

@@ -13,7 +13,7 @@ internal final class ExampleHTTPClient: HTTPClientProtocol {
     internal init() {
         self.httpClient = HTTPClient(name: "ExampleHTTPClient",
                                      configuration: nil,
-                                     logger: ExampleHTTPLogger(),
+                                     logger: HTTPClientLoggerFull(logAction: { print($0) }),
                                      commonHeaders: [])
     }
 

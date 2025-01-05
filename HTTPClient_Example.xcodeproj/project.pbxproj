@@ -10,7 +10,6 @@
 		1CD8196AD84A0A39D8695A38 /* Pods_HTTPClient_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95981F67F5807ED7C84A1F24 /* Pods_HTTPClient_Example.framework */; };
 		A5716D99271E7E6400844212 /* ExampleHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5716D98271E7E6400844212 /* ExampleHTTPClient.swift */; };
 		A5716D9C271E850A00844212 /* ExampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5716D9B271E850A00844212 /* ExampleCell.swift */; };
-		A5B34F5C27019163005F23C5 /* ExampleHTTPLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B34F5B27019163005F23C5 /* ExampleHTTPLogger.swift */; };
 		F006A29726989C1D00F0A062 /* HTTPClient_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F006A29626989C1D00F0A062 /* HTTPClient_Framework.framework */; };
 		F006A29826989C1D00F0A062 /* HTTPClient_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F006A29626989C1D00F0A062 /* HTTPClient_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F0B2E9D626EA39D600CCA6B9 /* ExampleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B2E9D526EA39D600CCA6B9 /* ExampleParser.swift */; };
@@ -41,7 +40,6 @@
 		95981F67F5807ED7C84A1F24 /* Pods_HTTPClient_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTTPClient_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5716D98271E7E6400844212 /* ExampleHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleHTTPClient.swift; sourceTree = "<group>"; };
 		A5716D9B271E850A00844212 /* ExampleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleCell.swift; sourceTree = "<group>"; };
-		A5B34F5B27019163005F23C5 /* ExampleHTTPLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleHTTPLogger.swift; sourceTree = "<group>"; };
 		B0E8B7441542246515DCACF1 /* Pods-HTTPClient_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPClient_Example.release.xcconfig"; path = "Target Support Files/Pods-HTTPClient_Example/Pods-HTTPClient_Example.release.xcconfig"; sourceTree = "<group>"; };
 		F006A29626989C1D00F0A062 /* HTTPClient_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HTTPClient_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0B2E9D526EA39D600CCA6B9 /* ExampleParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleParser.swift; sourceTree = "<group>"; };
@@ -119,7 +117,6 @@
 			children = (
 				A5716D98271E7E6400844212 /* ExampleHTTPClient.swift */,
 				F0B2E9D726EA3AF800CCA6B9 /* ExampleAPIEndPoint.swift */,
-				A5B34F5B27019163005F23C5 /* ExampleHTTPLogger.swift */,
 				F0B2E9D526EA39D600CCA6B9 /* ExampleParser.swift */,
 			);
 			path = HTTPClient;
@@ -289,7 +286,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5B34F5C27019163005F23C5 /* ExampleHTTPLogger.swift in Sources */,
 				F0EBCB4F26989A7E006A2695 /* ExampleViewController.swift in Sources */,
 				F0B2E9D826EA3AF800CCA6B9 /* ExampleAPIEndPoint.swift in Sources */,
 				A5716D99271E7E6400844212 /* ExampleHTTPClient.swift in Sources */,
