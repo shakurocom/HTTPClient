@@ -18,7 +18,7 @@ public protocol HTTPClientParser: Sendable {
     /// Emit custom server/API -related error (if needed).
     /// Response parsed for error prior to parsing for result.
     /// If you need serialized data here - call `serializeResponseData(responseData)`
-    func parseForError(response: HTTPURLResponse?, responseData: Data?) -> Swift.Error?
+    func parseForError(response: HTTPURLResponse?, responseData: Data?) throws
 
     /// Parse for successfull response object.
     /// Should throw

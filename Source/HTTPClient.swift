@@ -35,6 +35,12 @@ public extension HTTPClientProtocol {
             return httpClient.upload(multipartFormData: multipartFormData, options: options, completion: completion)
         }
 
+    func upload<ParserType: HTTPClientParser>(
+        multipartFormData: Alamofire.MultipartFormData,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+            return await httpClient.upload(multipartFormData: multipartFormData, options: options)
+        }
+
     func cancelAllTasks(completingOnQueue queue: DispatchQueue = .main, completion: (@Sendable () -> Void)? = nil) {
         httpClient.cancelAllTasks(completingOnQueue: queue, completion: completion)
     }
@@ -47,14 +53,16 @@ public final class HTTPClient<EndpointType: HTTPClientAPIEndPoint>: Sendable {
     private let session: Alamofire.Session
     private let callbackQueue: DispatchQueue
     private let logger: HTTPClientLogger
-    private let commonHeadersInternal: [Alamofire.HTTPHeader]
+    private let commonHeadersProvider: (@Sendable () -> [Alamofire.HTTPHeader])?
+    private let emptyResponseCodes: Set<Int>
 
     // MARK: - Initialization
 
     public init(name: String,
                 configuration: URLSessionConfiguration? = nil,
                 logger: HTTPClientLogger = HTTPClientLoggerNone(),
-                commonHeaders: [Alamofire.HTTPHeader] = []) {
+                commonHeadersProvider: (@Sendable () -> [Alamofire.HTTPHeader])? = nil,
+                emptyResponseCodes: Set<Int> = DataResponseSerializer.defaultEmptyResponseCodes) {
         let config: URLSessionConfiguration
         if let realConfig = configuration {
             config = realConfig
@@ -65,16 +73,11 @@ public final class HTTPClient<EndpointType: HTTPClientAPIEndPoint>: Sendable {
         self.session = Alamofire.Session(configuration: config)
         self.callbackQueue = DispatchQueue(label: "\(name).callbackQueue", attributes: DispatchQueue.Attributes.concurrent)
         self.logger = logger
-        self.commonHeadersInternal = commonHeaders
+        self.commonHeadersProvider = commonHeadersProvider
+        self.emptyResponseCodes = emptyResponseCodes
     }
 
     // MARK: - Public
-
-    /// Headers added to all request, performed with this HTTPClient.
-    /// Default value is `[]`.
-    public func commonHeaders() -> [Alamofire.HTTPHeader] {
-        return commonHeadersInternal
-    }
 
     public func cancelAllTasks(completingOnQueue queue: DispatchQueue = .main, completion: (@Sendable () -> Void)? = nil) {
         session.cancelAllRequests(completingOnQueue: queue, completion: completion)
@@ -211,7 +214,7 @@ private extension HTTPClient {
     private func formRequest<ParserType: HTTPClientParser>(
         options: HTTPClientRequestOptions<ParserType, EndpointType>) -> RequestData {
             var resolvedHeaders = Alamofire.HTTPHeaders()
-            commonHeaders().forEach({ resolvedHeaders.add($0) })
+            commonHeadersProvider?().forEach({ resolvedHeaders.add($0) })
             options.headers.forEach({ resolvedHeaders.add($0) })
             return RequestData(urlString: options.endpoint.urlString(),
                                method: options.method,
@@ -237,7 +240,7 @@ private extension HTTPClient {
             let response = await request
                 .validate(statusCode: options.acceptableStatusCodes)
                 .validate(contentType: acceptableContentTypes)
-                .serializingData(automaticallyCancelling: true)
+                .serializingData(automaticallyCancelling: true, emptyResponseCodes: emptyResponseCodes)
                 .response
             logger.clientDidReceiveResponse(requestOptions: options,
                                             request: response.request,
@@ -283,7 +286,8 @@ private extension HTTPClient {
     private static func applyParser<ParserType: HTTPClientParser, ResponseValue: Sendable>(
         response: AFDataResponse<ResponseValue>,
         requestOptions: HTTPClientRequestOptions<ParserType, EndpointType>,
-        logger: HTTPClientLogger) -> CancellableAsyncResult<ParserType.ResultType> {
+        logger: HTTPClientLogger)
+    -> CancellableAsyncResult<ParserType.ResultType> {
         if let error = response.error, error.isExplicitlyCancelledError {
             logger.requestWasCancelled(requestOptions: requestOptions,
                                        request: response.request,
@@ -293,7 +297,9 @@ private extension HTTPClient {
         }
 
         // 1) direct parse for error
-        if let error = requestOptions.parser.parseForError(response: response.response, responseData: response.data) {
+        do {
+            try requestOptions.parser.parseForError(response: response.response, responseData: response.data)
+        } catch let error {
             logger.parserDidFindError(requestOptions: requestOptions,
                                       request: response.request,
                                       response: response.response,

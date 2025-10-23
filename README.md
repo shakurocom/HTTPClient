@@ -1,7 +1,7 @@
 ![Shakuro HTTPClient](Resources/title_image.png)
 <br><br>
 # HTTPClient
-![Version](https://img.shields.io/badge/version-1.2.2-blue.svg)
+![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-green.svg)
 

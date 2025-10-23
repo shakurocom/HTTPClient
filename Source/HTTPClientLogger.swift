@@ -186,6 +186,8 @@ extension HTTPClientLoggerFull: HTTPClientLogger {
                     } else {
                         bodyParameters = .json(parameters: parameters)
                     }
+                case .httpBodyPlainString(_):
+                    break
                 }
                 requestDescription.append("\n\(tab)parameters: \(bodyParameters)")
             }

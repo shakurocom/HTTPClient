@@ -13,7 +13,7 @@ public struct HTTPClientRequestOptions<ParserType: HTTPClientParser, EndpointTyp
     public let urlQueryParametersAddArrayBrackets: Bool
     public let bodyParameters: HTTPClientBodyParameters?
     /// Headers will be applied in this order (overriding previous ones if key is the same):
-    ///     default for http method -> HTTPClient.commonHeaders() -> RequestOptions.headers
+    ///     default for http method -> HTTPClient.commonHeadersProvider
     ///
     /// Default value contains "Accept": "application/json".
     ///
