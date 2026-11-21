@@ -36,6 +36,23 @@ Then, run the following command:
 $ pod install
 ```
 
+### Swift Package Manager
+
+Add the package to the `dependencies` of your `Package.swift`:
+
+```swift
+.package(url: "https://github.com/shakurocom/HTTPClient.git", from: "1.3.1")
+```
+
+and the product to your target:
+
+```swift
+.product(name: "HTTPClient", package: "HTTPClient")
+```
+
+In Xcode, use File > Add Package Dependencies… with `https://github.com/shakurocom/HTTPClient.git`.
+With SPM the module is `HTTPClient` (`import HTTPClient`); with CocoaPods it is `Shakuro_HTTPClient`.
+
 ### Manually
 
 If you prefer not to use CocoaPods, you can integrate Shakuro.HTTPClient simply by copying it to your project.

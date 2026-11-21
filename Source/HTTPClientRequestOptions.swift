@@ -3,6 +3,7 @@
 //
 
 import Alamofire
+import Foundation
 
 public struct HTTPClientRequestOptions<ParserType: HTTPClientParser, EndpointType: HTTPClientAPIEndPoint>: Sendable {
 
