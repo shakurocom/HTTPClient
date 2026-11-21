@@ -4,7 +4,11 @@
 //
 
 import Alamofire
+#if SWIFT_PACKAGE
+import CommonTypes
+#else
 import Shakuro_CommonTypes
+#endif
 import Foundation
 
 extension AFError: NetworkErrorConvertible {
