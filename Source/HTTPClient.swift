@@ -33,6 +33,20 @@ public extension HTTPClientProtocol {
         }
 
     func upload<ParserType: HTTPClientParser>(
+        data: Data,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>) async -> CancellableAsyncResult<ParserType.ResultType> {
+            return await httpClient.upload(data: data, options: options)
+        }
+
+    func upload<ParserType: HTTPClientParser>(
+        data: Data,
+        options: HTTPClientRequestOptions<ParserType, EndpointType>,
+        completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void
+    ) -> Alamofire.Request {
+        return httpClient.upload(data: data, options: options, completion: completion)
+    }
+
+    func upload<ParserType: HTTPClientParser>(
         multipartFormData: Alamofire.MultipartFormData,
         options: HTTPClientRequestOptions<ParserType, EndpointType>,
         completion: @escaping @Sendable (_ response: CancellableAsyncResult<ParserType.ResultType>) -> Void) -> Alamofire.Request {
