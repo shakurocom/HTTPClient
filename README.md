@@ -41,7 +41,7 @@ $ pod install
 Add the package to the `dependencies` of your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/shakurocom/HTTPClient.git", from: "1.3.1")
+.package(url: "https://github.com/shakurocom/HTTPClient.git", from: "1.4.1")
 ```
 
 and the product to your target:
